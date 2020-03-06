@@ -1,0 +1,83 @@
+{
+  "id": "83c082c0-5032-11ea-8fab-bbe0f0fcf287",
+  "name": "UploadCucumberReport",
+  "friendlyName": "Upload Cucumber Report",
+  "description": "Uploads Cucumber HTML report",
+  "author": "Maciej Maciejewski",
+  "helpMarkDown": "Replace with markdown to show in help",
+  "category": "Utility",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [],
+  "version": {
+    "Major": "0",
+    "Minor": "1",
+    "Patch": "0"
+  },
+  "minimumAgentVersion": "1.95.0",
+  "instanceNameFormat": "UploadCucumberReport $(message)",
+  "inputs": [
+    {
+      "name": "jsonDir",
+      "type": "filePath",
+      "label": "Directory where cucumber report is located",
+      "defaultValue": "$(Build.DefaultWorkingDirectory)",
+      "required": false,
+      "helpMarkDown": ""
+    },
+    {
+      "name": "outputPath",
+      "type": "filePath",
+      "label": "Output directory Directory",
+      "defaultValue": "$(Build.DefaultWorkingDirectory)",
+      "required": true,
+      "helpMarkDown": "Path where HTML report is generated"
+    },
+    {
+      "name": "theme",
+      "type": "pickList",
+      "label": "Report Theme",
+      "defaultValue": "bootstrap",
+      "required": true,
+      "helpMarkDown": "Report Theme",
+      "options": {
+        "bootstrap": "Bootstrap",
+        "hierarchy": "Hierarchy",
+        "foundation": "Foundation",
+        "simple": "Simple"
+       }
+    },
+    {
+      "name": "reportSuiteAsScenarios",
+      "type": "boolean",
+      "label": "Report suites as scenarios",
+      "defaultValue": "$(Build.DefaultWorkingDirectory)",
+      "required": true,
+      "helpMarkDown": "Path where HTML report is placed"
+    },
+    {
+      "name": "metadata",
+      "type": "string",
+      "label": "Metadata",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Metadata key-value set in JSON format"
+    },
+    {
+      "name": "reportName",
+      "type": "string",
+      "label": "Report name",
+      "defaultValue": "{}",
+      "required": false,
+      "helpMarkDown": "Name to be displayed in the report"
+    }
+  ],
+  "execution": {
+    "Node10": {
+      "target": "index.js",
+      "argumentFormat": ""
+    }
+  }
+}

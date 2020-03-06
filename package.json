@@ -1,0 +1,31 @@
+{
+  "name": "azure-pipelines-cucumber",
+  "version": "1.0.0",
+  "description": "Embed Protractor HTML result into release and build tabs",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maciejmaciejewski/azure-pipelines-cucumber.git"
+  },
+  "private": true,
+  "keywords": [
+    "Azure DevOps",
+    "Cucumber"
+  ],
+  "author": "Maciej Maciejewski <maciej.maciejewski@finastra.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maciejmaciejewski/azure-pipelines-cucumber/issues"
+  },
+  "homepage": "maciejmaciejewski/azure-pipelines-cucumber",
+  "dependencies": {
+    "vss-web-extension-sdk": "^5.141.0"
+  },
+  "devDependencies": {
+    "@types/node": "^13.7.4",
+    "typescript": "^3.8.2"
+  }
+}

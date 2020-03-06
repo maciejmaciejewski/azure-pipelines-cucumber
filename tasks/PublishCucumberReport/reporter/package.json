@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "node script.js"
+  },
+  "dependencies": {
+    "cucumber-html-reporter": "latest"
+  }
+}

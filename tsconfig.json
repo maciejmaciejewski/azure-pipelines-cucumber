@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "moduleResolution": "node",
+    "target": "es6",
+    "outDir": "dist/",
+    "sourceMap": true,
+    "alwaysStrict": true,
+    "types": [
+      "vss-web-extension-sdk"
+    ],
+    "skipLibCheck": true,
+  },
+  "include": [
+    "src/*"
+  ]
+}
