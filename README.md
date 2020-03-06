@@ -43,6 +43,14 @@ steps:
     title: API
 ```
 
+### Example GUI setup
+
+![Cucumber Task](images/gui-configuration.png)
+
+### Example report on build tab
+
+![Build Tab](images/build-tab.png)
+
 ## Credits
 
 For generating HTML report task uses  [cucumber-html-reporter](https://www.npmjs.com/package/cucumber-html-reporter)

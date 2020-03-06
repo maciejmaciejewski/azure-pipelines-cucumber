@@ -14,7 +14,6 @@
       "type": "git",
       "uri": "https://github.com/maciejmaciejewski/azure-pipelines-cucumber"
     },
-    "screenshots": [],
     "targets": [
       {
         "id": "Microsoft.VisualStudio.Services"
@@ -51,6 +50,14 @@
       "color": "rgb(220, 235, 252)",
       "theme": "light"
     },
+    "screenshots": [
+      {
+        "path": "images/build-tab.png"
+      },
+      {
+        "path": "images/gui-configuration.png"
+      }
+    ],
     "files": [
       {
         "path": "tab.html",
