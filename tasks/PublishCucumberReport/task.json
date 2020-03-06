@@ -17,14 +17,14 @@
     "Patch": "0"
   },
   "minimumAgentVersion": "1.95.0",
-  "instanceNameFormat": "UploadCucumberReport",
+  "instanceNameFormat": "Publish Cucumber Report",
   "inputs": [
     {
       "name": "jsonDir",
       "type": "filePath",
       "label": "Input Directory",
       "defaultValue": "$(Build.DefaultWorkingDirectory)",
-      "required": false,
+      "required": true,
       "helpMarkDown": "Directory where cucumber JSON reports are located"
     },
     {
@@ -33,7 +33,7 @@
       "label": "Output Directory",
       "defaultValue": "$(Build.DefaultWorkingDirectory)",
       "required": true,
-      "helpMarkDown": "Path where HTML report is generated"
+      "helpMarkDown": "Path where generated HTML output report is saved"
     },
     {
       "name": "theme",
@@ -55,7 +55,7 @@
       "label": "Report suites as scenarios",
       "defaultValue": "true",
       "required": true,
-      "helpMarkDown": "Path where HTML report is placed"
+      "helpMarkDown": "Report suites as scenarios"
     },
     {
       "name": "metadata",
@@ -63,7 +63,7 @@
       "label": "Metadata",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Metadata key-value set in JSON format",
+      "helpMarkDown": "Key-Value set in JSON format",
       "properties": {
         "resizable": "true",
         "rows": "2"
@@ -80,10 +80,10 @@
     {
       "name": "title",
       "type": "string",
-      "label": "Report Ttiel",
+      "label": "Report Title",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Name of the report"
+      "helpMarkDown": "Title of the report"
     }
   ],
   "execution": {
