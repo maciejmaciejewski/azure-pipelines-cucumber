@@ -14,24 +14,24 @@ Once the file is saved it can be useda as an input to the Publish task.
 
 ### Parameters
 
-`Input directory` - path where looks for JSON files and then combines them into single report
+`jsonDir` - path where task looks for JSON files and then combines them into single report
 
-`Output directory` - path where task saves outpu HTML report
+`outputPath` - path where task saves output HTML report
 
-`Metadata` - optional custom metadata in JSON format that is added to the report
+`metadata` - optional custom metadata in JSON format that is added to the report
 
-`Theme` - theme used for the report
+`theme` - theme used for the report
 
-`Name` - optional name of the report
+`name` - optional name of the report
 
-`Title` - optional title of the report
+`title` - optional title of the report
 
 ### Example YAML setup
 
 ```YAML
 steps:
-- task: MaciejMaciejewski.azure-pipelines-cucumber.PublishCucumberReport.PublishCucumberReport@1
-  displayName: 'UploadCucumberReport '
+- task: PublishCucumberReport@1
+  displayName: 'Publish Cucumber Report'
   inputs:
     jsonDir: ./results/cucumber
     outputPath: ./results/cucumber
