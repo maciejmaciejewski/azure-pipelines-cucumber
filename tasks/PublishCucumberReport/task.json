@@ -1,8 +1,8 @@
 {
   "id": "83c082c0-5032-11ea-8fab-bbe0f0fcf287",
-  "name": "UploadCucumberReport",
-  "friendlyName": "Upload Cucumber Report",
-  "description": "Uploads Cucumber HTML report",
+  "name": "PublishCucumberReport",
+  "friendlyName": "Publish Cucumber Report",
+  "description": "Publish Cucumber Report",
   "author": "Maciej Maciejewski",
   "helpMarkDown": "Replace with markdown to show in help",
   "category": "Utility",
@@ -12,25 +12,25 @@
   ],
   "demands": [],
   "version": {
-    "Major": "0",
-    "Minor": "1",
+    "Major": "1",
+    "Minor": "0",
     "Patch": "0"
   },
   "minimumAgentVersion": "1.95.0",
-  "instanceNameFormat": "UploadCucumberReport $(message)",
+  "instanceNameFormat": "UploadCucumberReport",
   "inputs": [
     {
       "name": "jsonDir",
       "type": "filePath",
-      "label": "Directory where cucumber report is located",
+      "label": "Input Directory",
       "defaultValue": "$(Build.DefaultWorkingDirectory)",
       "required": false,
-      "helpMarkDown": ""
+      "helpMarkDown": "Directory where cucumber JSON reports are located"
     },
     {
       "name": "outputPath",
       "type": "filePath",
-      "label": "Output directory Directory",
+      "label": "Output Directory",
       "defaultValue": "$(Build.DefaultWorkingDirectory)",
       "required": true,
       "helpMarkDown": "Path where HTML report is generated"
@@ -53,25 +53,37 @@
       "name": "reportSuiteAsScenarios",
       "type": "boolean",
       "label": "Report suites as scenarios",
-      "defaultValue": "$(Build.DefaultWorkingDirectory)",
+      "defaultValue": "true",
       "required": true,
       "helpMarkDown": "Path where HTML report is placed"
     },
     {
       "name": "metadata",
-      "type": "string",
+      "type": "multiline",
       "label": "Metadata",
       "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Metadata key-value set in JSON format"
+      "helpMarkDown": "Metadata key-value set in JSON format",
+      "properties": {
+        "resizable": "true",
+        "rows": "2"
+      }
     },
     {
-      "name": "reportName",
+      "name": "name",
       "type": "string",
-      "label": "Report name",
-      "defaultValue": "{}",
+      "label": "Report Name",
+      "defaultValue": "",
       "required": false,
-      "helpMarkDown": "Name to be displayed in the report"
+      "helpMarkDown": "Name of the report"
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "label": "Report Ttiel",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Name of the report"
     }
   ],
   "execution": {
