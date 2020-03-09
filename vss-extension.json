@@ -79,6 +79,10 @@
       {
         "path": "src",
         "addressable": true
+      },
+      {
+        "path": "images",
+        "addressable": true
       }
     ],
     "contributions": [

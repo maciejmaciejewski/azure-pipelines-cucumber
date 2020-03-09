@@ -76,12 +76,12 @@ class BuildReportTab extends BaseReportTab {
       const projectId = vsoContext.project.id;
       const planId = build.orchestrationPlan.planId;
 
-      let protractorAttachment = (await taskClient.getPlanAttachments(projectId, this.hubName, planId, this.ATTACHMENT_NAME)).find((attachment) => { return attachment.name === this.ATTACHMENT_NAME})
+      let protractorAttachment = (await taskClient.getPlanAttachments(projectId, this.hubName, planId, this.ATTACHMENT_TYPE)).find((attachment) => { return attachment.name === this.ATTACHMENT_NAME})
 
       if (protractorAttachment) {
         this.setTabText('Processing Report File')
 
-        let attachmentContent = await taskClient.getAttachmentContent(projectId, this.hubName, planId, protractorAttachment.timelineId, protractorAttachment.recordId, this.ATTACHMENT_NAME, protractorAttachment.name)
+        let attachmentContent = await taskClient.getAttachmentContent(projectId, this.hubName, planId, protractorAttachment.timelineId, protractorAttachment.recordId, this.ATTACHMENT_TYPE, protractorAttachment.name)
         let contentHTML = this.convertBufferToString(attachmentContent)
 
         this.setFrameHtmlContent(contentHTML)
@@ -168,7 +168,7 @@ class ReleaseReportTab extends BaseReportTab {
         deployStep.attempt,
         runPlanId,
         attachment.recordId,
-        this.ATTACHMENT_NAME,
+        this.ATTACHMENT_TYPE,
         attachment.name,
       );
 
