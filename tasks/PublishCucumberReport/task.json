@@ -14,7 +14,7 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "1"
+    "Patch": "2"
   },
   "minimumAgentVersion": "1.95.0",
   "instanceNameFormat": "Publish Cucumber Report",
@@ -23,7 +23,7 @@
       "name": "jsonDir",
       "type": "filePath",
       "label": "Input Directory",
-      "defaultValue": "$(Build.DefaultWorkingDirectory)",
+      "defaultValue": "$(System.DefaultWorkingDirectory)",
       "required": true,
       "helpMarkDown": "Directory where cucumber JSON reports are located"
     },
@@ -31,7 +31,7 @@
       "name": "outputPath",
       "type": "filePath",
       "label": "Output Directory",
-      "defaultValue": "$(Build.DefaultWorkingDirectory)",
+      "defaultValue": "$(Sytem.DefaultWorkingDirectory)",
       "required": true,
       "helpMarkDown": "Path where generated HTML output report is saved"
     },
