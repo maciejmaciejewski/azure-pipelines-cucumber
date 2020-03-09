@@ -76,7 +76,7 @@ class BuildReportTab extends BaseReportTab {
       const projectId = vsoContext.project.id;
       const planId = build.orchestrationPlan.planId;
 
-      let protractorAttachment = (await taskClient.getPlanAttachments(projectId, this.hubName, planId, this.ATTACHMENT_NAME)).find((attachment) => { return attachment.name === this.attachmentName})
+      let protractorAttachment = (await taskClient.getPlanAttachments(projectId, this.hubName, planId, this.ATTACHMENT_NAME)).find((attachment) => { return attachment.name === this.ATTACHMENT_NAME})
 
       if (protractorAttachment) {
         this.setTabText('Processing Report File')
