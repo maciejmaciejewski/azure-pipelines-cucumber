@@ -149,7 +149,7 @@ class ReleaseReportTab extends BaseReportTab {
         env.id,
         deployStep.attempt,
         runPlanId,
-        this.ATTACHMENT_NAME
+        this.ATTACHMENT_TYPE
       );
 
       if (attachments.length === 0) {
