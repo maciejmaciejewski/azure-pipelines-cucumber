@@ -23,20 +23,20 @@
       updateContext: noop
     });
 
-    // VSS.register("registerRelease", {
-    //   updateContext: noop,
-    //   isInvisible: function (state) {
-    //     let protractorTaskId = "f921c333-68d3-50ff-9d01-c71ecafad96b"
-    //     let resultArray = []
-    //     state.releaseEnvironment.deployPhasesSnapshot.forEach(phase => {
-    //       phase.workflowTasks.forEach(task => {
-    //           resultArray.push(task.taskId)
-    //       })
-    //     })
+    VSS.register("registerRelease", {
+      updateContext: noop,
+      isInvisible: function (state) {
+        let protractorTaskId = "83c082c0-5032-11ea-8fab-bbe0f0fcf287"
+        let resultArray = []
+        state.releaseEnvironment.deployPhasesSnapshot.forEach(phase => {
+          phase.workflowTasks.forEach(task => {
+              resultArray.push(task.taskId)
+          })
+        })
 
-    //     return !resultArray.includes(protractorTaskId)
-    //   }
-    // });
+        return !resultArray.includes(protractorTaskId)
+      }
+    });
   </script>
 
   <style>
