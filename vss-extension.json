@@ -7,9 +7,7 @@
     "author": "Maciej Maciejewski",
     "version": "1.0.2",
     "description": "Embed Cucumber HTML report in Azure Pipelines",
-    "galleryFlags": [
-      "Preview"
-    ],
+    "galleryFlags": [],
     "repository": {
       "type": "git",
       "uri": "https://github.com/maciejmaciejewski/azure-pipelines-cucumber"
