@@ -1,16 +1,17 @@
 {
   "name": "publish-cucumber-report",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "private": true,
   "dependencies": {
+    "azure-pipelines-task-lib": "^2.9.3",
     "fs-extra": "^8.1.0",
-    "azure-pipelines-task-lib": "^2.9.3"
+    "globby": "^11.0.0",
+    "hat": "0.0.3"
   },
   "devDependencies": {},
-  "scripts": {
-  },
+  "scripts": {},
   "author": "",
   "license": "ISC"
 }
