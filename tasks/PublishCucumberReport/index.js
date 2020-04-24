@@ -72,14 +72,14 @@ try {
 
   unifyCucumberReport(files, pathHasMagic)
 
-  const outputPath = tl.getPathInput('outputPath', true, true)
+  const outputFile = join(tl.getPathInput('outputPath', true, true), 'cucumber.html')
   const runOpts = getDefaultExecOptions()
   const nodeTool = tl.tool(tl.which('node', true))
   nodeTool.arg(["script.js"])
 
   runOpts.env = {
     "JSON_DIR": pathHasMagic ? consolidatedPath : inputPath,
-    "OUTPUT_PATH": join(outputPath, 'cucumber.html'),
+    "OUTPUT_PATH": outputFile,
     "REPORT_SUITES_AS_SCENARIOS": tl.getBoolInput('reportSuiteAsScenarios', true),
     "RAW_METADATA": tl.getInput('metadata', false),
     "THEME": tl.getInput('theme', true),
@@ -93,7 +93,7 @@ try {
     throw new Error('Failed to run script')
   }
 
-  tl.addAttachment('cucumber.report', 'cucumber_report.html', outputPath)
+  tl.addAttachment('cucumber.report', 'cucumber_report.html', outputFile)
 } catch (e) {
   tl.warning(e)
   tl.setResult(tl.TaskResult.SucceededWithIssues)
