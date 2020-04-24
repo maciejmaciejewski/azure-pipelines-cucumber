@@ -18,10 +18,13 @@ function unifyCucumberReport (filesArray, hasMagic) {
   if(hasMagic) {
     consolidatedPath = `${process.env.SYSTEM_DEFAULTWORKINGDIRECTORY}/cucumber-html-reporter/${hat()}/consolidated`
     ensureDirSync(consolidatedPath)
+    tl.debug('Wildcard path detected')
+    tl.debug(`Merging report into ${consolidatedPath}`)
   }
 
   filesArray.forEach(filePath => {
-    let rawContent = readFileSync(filePath, 'utf-8')
+    tl.debug(`Processing ${filePath}`)
+    const rawContent = readFileSync(filePath, 'utf-8')
     let jsonContent = JSON.parse(rawContent)
 
     jsonContent.forEach(feature => {
@@ -49,10 +52,11 @@ function unifyCucumberReport (filesArray, hasMagic) {
           delete element['after']
         }
       })
-
-      const savePath = hasMagic ? join(consolidatedPath, basename(filePath)) : filePath
-      writeFileSync(savePath, JSON.stringify(jsonContent))
     })
+
+    const savePath = hasMagic ? join(consolidatedPath, basename(filePath)) : filePath
+    tl.debug(`Saving modified report as ${savePath}`)
+    writeFileSync(savePath, JSON.stringify(jsonContent))
   })
 }
 
