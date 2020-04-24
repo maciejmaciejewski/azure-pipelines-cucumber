@@ -14,7 +14,7 @@ Once the file is saved it can be useda as an input to the Publish task.
 
 ### Parameters
 
-`jsonDir` - path where task looks for JSON files and then combines them into single report
+`jsonDir` - path where task looks for JSON files and then combines them into single report. This parameter supports wildcards, if used all files from any matching sub-path will get consolidated into single report. Use this option with caution as the task will go through all located JSON files and non-cucumber files reporter will throw an error.
 
 `outputPath` - path where task saves output HTML report
 
