@@ -71,11 +71,11 @@ try {
   }
 
   const inputPath = (tl.getPathInput('jsonDir', true, false)).replace(/\\/g, '/')
-  const files = globby.sync([inputPath], { expandDirectories : { files: ['*'], extensions: ['.json'] }})
   const pathHasMagic = globby.hasMagic(inputPath)
+  const files = globby.sync([`${inputPath}/*.json`])
+  tl.debug(`Found ${files.length} matching ${inputPath} pattern`)
 
   unifyCucumberReport(files, pathHasMagic)
-
   const outputFile = join(tl.getPathInput('outputPath', true, true), 'cucumber.html')
   const runOpts = getDefaultExecOptions()
   const nodeTool = tl.tool(tl.which('node', true))
