@@ -57,7 +57,7 @@ steps:
     publisherId: MaciejMaciejewski
     extensionId: 'azure-pipelines-cucumber'
     extensionTag: dev
-    extensionName: 'Protractor Report Dev'
+    extensionName: 'Cucumber HTML Report Dev'
     extensionVersion: '1.0.$(Build.BuildId)'
     extensionVisibility: private
     extensionPricing: free
@@ -70,6 +70,7 @@ steps:
     method: vsix
     vsixFile: '**.vsix'
     accounts: 'maciejmaciejewski-dev'
+  condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
 - task: CopyFiles@2
   displayName: 'Copy Files'
