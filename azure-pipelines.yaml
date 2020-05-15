@@ -70,6 +70,7 @@ steps:
     method: vsix
     vsixFile: '**.vsix'
     accounts: 'maciejmaciejewski-dev'
+  condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
 - task: CopyFiles@2
   displayName: 'Copy Files'

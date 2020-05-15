@@ -43,6 +43,14 @@ steps:
     title: API
 ```
 
-## Credits
+## Additional notes
 
-For generating HTML report task uses  [cucumber-html-reporter](https://www.npmjs.com/package/cucumber-html-reporter)
+For generating HTML report task uses [cucumber-html-reporter](https://www.npmjs.com/package/cucumber-html-reporter).
+Because of that it is required to have NodeJS installed on AzureDevOps Agent machine. In order to do it, simply add below snippet to your pipeline.
+
+```YAML
+- task: NodeTool@0
+  displayName: 'Install Node 12.x'
+  inputs:
+    versionSpec: 12.x
+```
