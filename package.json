@@ -29,7 +29,8 @@
     "azure-devops-ui": "^2.166.3",
     "node-fetch": "^2.6.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "vss-web-extension-sdk": "^5.141.0"
   },
   "devDependencies": {
     "@types/node": "^13.13.6",
