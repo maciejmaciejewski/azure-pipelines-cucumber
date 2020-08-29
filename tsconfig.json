@@ -6,12 +6,13 @@
     "outDir": "dist/",
     "sourceMap": true,
     "alwaysStrict": true,
+    "jsx": "react",
     "types": [
-      "vss-web-extension-sdk"
+      "react"
     ],
     "skipLibCheck": true,
   },
-  "include": [
-    "src/*"
+  "files": [
+    "src/tabContent.tsx"
   ]
 }

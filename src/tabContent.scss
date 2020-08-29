@@ -1,0 +1,24 @@
+@import "node_modules/azure-devops-ui/Core/_platformCommon.scss";
+
+#postman-ext-container {
+  font-family: $fontFamily;
+}
+.bolt-tabbar-tabs {
+    font-size: $fontSizeM;
+    margin-bottom: 10px;
+  }
+
+.card-success {
+  color: $status-success-foreground;
+  background-color: $status-success-background;
+}
+
+.card-failure {
+  color: $status-error-foreground;
+  background-color: $status-error-background;
+}
+
+iframe.full-size {
+  border: 0;
+  height: 2000px;
+}
