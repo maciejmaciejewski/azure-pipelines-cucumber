@@ -9,6 +9,7 @@ import TFS_Release_Contracts = require("ReleaseManagement/Core/Contracts");
 abstract class BaseReportTab extends Controls.BaseControl {
   protected readonly ATTACHMENT_TYPE: string = "cucumber.report";
   protected readonly ATTACHMENT_NAME: string = "cucumber_report.html"
+  protected readonly SCREENSHOT_TYPE: string = "cucumber.screenshot"
   protected readonly TASK_ID: string = '83c082c0-5032-11ea-8fab-bbe0f0fcf287'
 
   protected constructor() {
@@ -50,6 +51,24 @@ abstract class BaseReportTab extends Controls.BaseControl {
 
     this.setTabText(message)
   }
+
+  protected sanitizeImageLinks(reportText: string, screenshotList) {
+    this.setTabText('Sanitizing Image Links')
+    screenshotList.forEach(screenshot => {
+      console.log(screenshot)
+      // Handle Windows paths`
+      let windowsPath = `screenshots\\\\${screenshot.name}`
+      let windowsRegExp = new RegExp(windowsPath, 'gi')
+      reportText = reportText.replace(windowsRegExp, screenshot._links.self.href)
+
+      // Handle Unix paths
+      let unixPath = `screenshots/${screenshot.name}`
+      let unixRegExp = new RegExp(unixPath, 'gi')
+      reportText = reportText.replace(unixRegExp, screenshot._links.self.href)
+    })
+
+    return reportText
+  }
 }
 class BuildReportTab extends BaseReportTab {
   config: TFS_Build_Extension_Contracts.IBuildResultsViewExtensionConfig = VSS.getConfiguration()
@@ -76,15 +95,24 @@ class BuildReportTab extends BaseReportTab {
       const projectId = vsoContext.project.id;
       const planId = build.orchestrationPlan.planId;
 
-      let protractorAttachment = (await taskClient.getPlanAttachments(projectId, this.hubName, planId, this.ATTACHMENT_TYPE)).find((attachment) => { return attachment.name === this.ATTACHMENT_NAME})
+      let cucumberReport = (await taskClient.getPlanAttachments(
+        projectId,
+        this.hubName,
+        planId,
+        this.ATTACHMENT_TYPE
+        ))[0]
 
-      if (protractorAttachment) {
+      if (cucumberReport) {
         this.setTabText('Processing Report File')
 
-        let attachmentContent = await taskClient.getAttachmentContent(projectId, this.hubName, planId, protractorAttachment.timelineId, protractorAttachment.recordId, this.ATTACHMENT_TYPE, protractorAttachment.name)
-        let contentHTML = this.convertBufferToString(attachmentContent)
+        const attachmentContent = await taskClient.getAttachmentContent(projectId, this.hubName, planId, cucumberReport.timelineId, cucumberReport.recordId, this.ATTACHMENT_TYPE, cucumberReport.name)
+        let htmlContent = this.convertBufferToString(attachmentContent)
+        this.setTabText('Looking for screenshots')
+        let screenshots = await taskClient.getPlanAttachments(projectId, this.hubName, planId, this.SCREENSHOT_TYPE)
 
-        this.setFrameHtmlContent(contentHTML)
+        let finalReport = this.sanitizeImageLinks(htmlContent, screenshots)
+        this.setTabText('Publishing Report')
+        this.setFrameHtmlContent(finalReport)
       } else {
         throw new Error("Report File Not Found")
       }
@@ -112,6 +140,8 @@ class ReleaseReportTab extends BaseReportTab {
     const rmClient = RM_Client.getClient() as RM_Client.ReleaseHttpClient;
     const release = await rmClient.getRelease(vsoContext.project.id, releaseId);
     const env = release.environments.filter((e) => e.id === environmentId)[0];
+
+    this.setTabText('Looking for Report File')
 
     try {
       if (!(env.deploySteps && env.deploySteps.length)) {
@@ -156,25 +186,39 @@ class ReleaseReportTab extends BaseReportTab {
         throw new Error("There is no HTML result attachment");
       }
 
-      const attachment = attachments[attachments.length - 1];
-      if (!(attachment && attachment._links && attachment._links.self && attachment._links.self.href)) {
-        throw new Error("There is no downloadable HTML result attachment");
+      let cucumberReport = attachments[0]
+
+      if (cucumberReport) {
+        this.setTabText('Processing Report File')
+
+        const attachmentContent = await rmClient.getTaskAttachmentContent(
+          vsoContext.project.id,
+          env.releaseId,
+          env.id,
+          deployStep.attempt,
+          runPlanId,
+          cucumberReport.recordId,
+          this.ATTACHMENT_TYPE,
+          cucumberReport.name,
+        );
+        const htmlContent = this.convertBufferToString(attachmentContent)
+
+        this.setTabText('Looking for screenshots')
+        const screenshots = await rmClient.getTaskAttachments(
+          vsoContext.project.id,
+          env.releaseId,
+          env.id,
+          deployStep.attempt,
+          runPlanId,
+          this.SCREENSHOT_TYPE
+        );
+
+        const finalReport = this.sanitizeImageLinks(htmlContent, screenshots)
+        this.setTabText('Publishing Report')
+        this.setFrameHtmlContent(finalReport)
       }
 
-      const attachmentContent = await rmClient.getTaskAttachmentContent(
-        vsoContext.project.id,
-        env.releaseId,
-        env.id,
-        deployStep.attempt,
-        runPlanId,
-        attachment.recordId,
-        this.ATTACHMENT_TYPE,
-        attachment.name,
-      );
 
-      const htmlContent = this.convertBufferToString(attachmentContent)
-
-      this.setFrameHtmlContent(htmlContent)
     } catch (error) {
       this.setErrorText(error, 'Unable to load Cucumber Report')
     }
