@@ -14,8 +14,8 @@
       "program": "${workspaceFolder}/tasks/PublishCucumberReport/index.js",
       "outputCapture": "std",
       "env": {
-        "INPUT_JSONDIR": "",
-        "INPUT_OUTPUTPATH": "",
+        "INPUT_JSONDIR": "${workspaceFolder}/tasks/PublishCucumberReport/inputs/jv",
+        "INPUT_OUTPUTPATH": "${workspaceFolder}/tasks/PublishCucumberReport/outputs",
         "INPUT_METADATA": "",
         "INPUT_THEME": "bootstrap",
         "INPUT_REPORTSUITEASSCENARIOS": true,
