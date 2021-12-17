@@ -1,10 +1,15 @@
 {
   "name": "azure-pipelines-cucumber",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Embed Protractor HTML result into release and build tabs",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "package": "tfx extension create --root . --env dev --manifest-globs vss-extension.json",
+    "gallery-publish": "tfx extension publish --token $PAT",
+    "clean": "rimraf ./dist && rimraf ./*.vsix",
+    "bump-version": "node utils/bump-version.js",
+    "build-publish": "npm run clean && npm run bump-version && npm run build && npm run package && npm run gallery-publish"
   },
   "repository": {
     "type": "git",
@@ -16,6 +21,9 @@
     "Cucumber"
   ],
   "author": "Maciej Maciejewski <maciej.maciejewski@finastra.com>",
+  "contributors": [
+    "selamanse <selamanse@scheinfrei.info>"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/maciejmaciejewski/azure-pipelines-cucumber/issues"
@@ -26,6 +34,8 @@
   },
   "devDependencies": {
     "@types/node": "^13.7.4",
+    "semver": "^7.3.5",
+    "tfx-cli": "^0.9.3",
     "typescript": "^3.9.7"
   }
 }
