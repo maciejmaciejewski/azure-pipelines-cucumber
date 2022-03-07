@@ -22,16 +22,29 @@ abstract class BaseReportTab extends Controls.BaseControl {
     return enc.decode(arr);
   }
 
-  protected setFrameHtmlContent(htmlStr: string) {
-    const htmlContainer = this.getElement().get(0);
-    const frame = htmlContainer.querySelector("#cucumber-result") as HTMLIFrameElement;
-    const waiting = htmlContainer.querySelector("#waiting") as HTMLElement;
-
-    if (htmlStr && frame && waiting) {
-      frame.srcdoc = htmlStr;
-      waiting.style.display = "none";
-      frame.style.display = "block";
+  protected setFrameHtmlContent(htmlStr: string, reportName: string) {
+    if(!htmlStr){
+      console.log("empty htmlstr")
+      return
     }
+    console.log("enter setFrameHtmlContent")
+
+    let templateFrame = $("#cucumber-result")
+    const waiting = $("#waiting")
+
+    let frame = templateFrame.clone()
+    frame.attr("id", `${templateFrame.attr("id")}-${Math.floor((Math.random() * 9999) + 1)}`)
+    templateFrame.after(frame);
+
+    frame.attr("temp_src", htmlStr);
+    
+    let frameMenuButton = $(`<button id="button-${frame.attr("id")}" onClick="displayReportFrame('${frame.attr('id')}')" class="bolt-button enabled bolt-focus-treatment" data-focuszone="focuszone-4" data-is-focusable="true" role="button" tabindex="0" type="button"><span class="bolt-button-text body-m">${reportName} (${frame.attr("id")})</span></button>`)
+
+    waiting.hide()
+    $("#cucumber-report-frame-menu")
+      .append(frameMenuButton)
+      .show()
+    console.log($(".cucumber-result"))
   }
 
   protected setTabText (message: string) {
@@ -95,27 +108,26 @@ class BuildReportTab extends BaseReportTab {
       const projectId = vsoContext.project.id;
       const planId = build.orchestrationPlan.planId;
 
-      let cucumberReport = (await taskClient.getPlanAttachments(
+      const cucumberReports = (await taskClient.getPlanAttachments(
         projectId,
         this.hubName,
         planId,
         this.ATTACHMENT_TYPE
-        ))[0]
+        ))
 
-      if (cucumberReport) {
-        this.setTabText('Processing Report File')
+        cucumberReports.forEach(async (cucumberReport, index) => {
+          this.setTabText('Processing Report File')
+          console.log(cucumberReport)
 
-        const attachmentContent = await taskClient.getAttachmentContent(projectId, this.hubName, planId, cucumberReport.timelineId, cucumberReport.recordId, this.ATTACHMENT_TYPE, cucumberReport.name)
-        let htmlContent = this.convertBufferToString(attachmentContent)
-        this.setTabText('Looking for screenshots')
-        let screenshots = await taskClient.getPlanAttachments(projectId, this.hubName, planId, this.SCREENSHOT_TYPE)
+          const attachmentContent = await taskClient.getAttachmentContent(projectId, this.hubName, planId, cucumberReport.timelineId, cucumberReport.recordId, this.ATTACHMENT_TYPE, cucumberReport.name)
+          let htmlContent = this.convertBufferToString(attachmentContent)
+          this.setTabText('Looking for screenshots')
+          let screenshots = await taskClient.getPlanAttachments(projectId, this.hubName, planId, this.SCREENSHOT_TYPE)
 
-        let finalReport = this.sanitizeImageLinks(htmlContent, screenshots)
-        this.setTabText('Publishing Report')
-        this.setFrameHtmlContent(finalReport)
-      } else {
-        throw new Error("Report File Not Found")
-      }
+          let finalReport = this.sanitizeImageLinks(htmlContent, screenshots)
+          this.setTabText('Publishing Report')
+          this.setFrameHtmlContent(finalReport, cucumberReport.name)
+        })
     } catch (error) {
       this.setErrorText(error, 'Unable to load Cucumber Report')
     }
@@ -154,8 +166,8 @@ class ReleaseReportTab extends BaseReportTab {
       }
 
       const runPlanIds = deployStep.releaseDeployPhases.map((phase) => phase.runPlanId);
-      var runPlanId = null;
-      if (!runPlanIds.length) {
+
+      if (runPlanIds.length == 0) {
         throw new Error("There are no plan IDs");
       } else {
         searchForRunPlanId: {
@@ -163,9 +175,58 @@ class ReleaseReportTab extends BaseReportTab {
             for (const deploymentJob of phase.deploymentJobs){
               for (const task of deploymentJob.tasks){
                 // TODO: Check if works on all browsers
+                console.log("task")
+                console.log(task.task)
                 if (task.task?.id === '83c082c0-5032-11ea-8fab-bbe0f0fcf287'){
-                  runPlanId = phase.runPlanId;
-                  break searchForRunPlanId;
+                  
+                  const attachments = await rmClient.getTaskAttachments(
+                    vsoContext.project.id,
+                    env.releaseId,
+                    env.id,
+                    deployStep.attempt,
+                    phase.runPlanId,
+                    this.ATTACHMENT_TYPE
+                  );
+                  
+                  if (attachments.length === 0) {
+                    throw new Error("There is no HTML result attachment");
+                  }
+                  console.log("attachment")
+                  console.log(attachments[0])
+                  let cucumberReport = attachments[0]
+                  console.log(cucumberReport)
+            
+                  if (cucumberReport) {
+                    this.setTabText('Processing Report File')
+            
+                    const attachmentContent = await rmClient.getTaskAttachmentContent(
+                      vsoContext.project.id,
+                      env.releaseId,
+                      env.id,
+                      deployStep.attempt,
+                      phase.runPlanId,
+                      cucumberReport.recordId,
+                      this.ATTACHMENT_TYPE,
+                      cucumberReport.name,
+                    );
+                    const htmlContent = this.convertBufferToString(attachmentContent)
+            
+                    this.setTabText('Looking for screenshots')
+                    const screenshots = await rmClient.getTaskAttachments(
+                      vsoContext.project.id,
+                      env.releaseId,
+                      env.id,
+                      deployStep.attempt,
+                      phase.runPlanId,
+                      this.SCREENSHOT_TYPE
+                    );
+            
+                    const finalReport = this.sanitizeImageLinks(htmlContent, screenshots)
+                    this.setTabText('Publishing Report')
+                    console.log(finalReport)
+                    this.setFrameHtmlContent(finalReport, cucumberReport.name)
+                  }
+
                 }
               }
             }
@@ -173,50 +234,7 @@ class ReleaseReportTab extends BaseReportTab {
         }
       }
 
-      const attachments = await rmClient.getTaskAttachments(
-        vsoContext.project.id,
-        env.releaseId,
-        env.id,
-        deployStep.attempt,
-        runPlanId,
-        this.ATTACHMENT_TYPE
-      );
-
-      if (attachments.length === 0) {
-        throw new Error("There is no HTML result attachment");
-      }
-
-      let cucumberReport = attachments[0]
-
-      if (cucumberReport) {
-        this.setTabText('Processing Report File')
-
-        const attachmentContent = await rmClient.getTaskAttachmentContent(
-          vsoContext.project.id,
-          env.releaseId,
-          env.id,
-          deployStep.attempt,
-          runPlanId,
-          cucumberReport.recordId,
-          this.ATTACHMENT_TYPE,
-          cucumberReport.name,
-        );
-        const htmlContent = this.convertBufferToString(attachmentContent)
-
-        this.setTabText('Looking for screenshots')
-        const screenshots = await rmClient.getTaskAttachments(
-          vsoContext.project.id,
-          env.releaseId,
-          env.id,
-          deployStep.attempt,
-          runPlanId,
-          this.SCREENSHOT_TYPE
-        );
-
-        const finalReport = this.sanitizeImageLinks(htmlContent, screenshots)
-        this.setTabText('Publishing Report')
-        this.setFrameHtmlContent(finalReport)
-      }
+      
 
 
     } catch (error) {
@@ -228,7 +246,10 @@ class ReleaseReportTab extends BaseReportTab {
 const htmlContainer = document.getElementById("container");
 console.log(VSS.getConfiguration())
 if (typeof VSS.getConfiguration().onBuildChanged === "function") {
+  console.log("BuildReportTab")
   BuildReportTab.enhance(BuildReportTab, htmlContainer, {});
-} else if (typeof VSS.getConfiguration().releaseEnvironment === "object") {
+} 
+if (typeof VSS.getConfiguration().releaseEnvironment === "object") {
+  console.log("ReleaseReportTab")
   ReleaseReportTab.enhance(ReleaseReportTab, htmlContainer, {});
 }

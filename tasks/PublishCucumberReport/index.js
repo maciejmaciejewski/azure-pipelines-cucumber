@@ -96,8 +96,8 @@ try {
     throw new Error('Failed to run script')
   }
 
-  console.log(`Uploading HTML report ${outputReportFile}`)
-  tl.addAttachment('cucumber.report', 'cucumber_report.html', outputReportFile)
+  console.log(`Uploading attachment file: ${outputReportFile} as type cucumber.report with name ${REPORT_NAME}.html`)
+  tl.addAttachment('cucumber.report', `${REPORT_NAME}.html`, outputReportFile)
 
   const screenshots = globby.sync(`${outputPath.replace(/\\/g, '/')}/screenshots/**.png`)
   screenshots.forEach(screenshotPath => {
