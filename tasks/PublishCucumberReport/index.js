@@ -56,7 +56,7 @@ function unifyCucumberReport (filesArray, hasMagic) {
 
     const savePath = hasMagic ? join(consolidatedPath, basename(filePath)) : filePath
     console.log(`Saving modified report as ${savePath}`)
-    writeFileSync(savePath, JSON.stringify(jsonContent))
+    writeFileSync(savePath, JSON.stringify(jsonContent, null, 2))
   })
 }
 
@@ -79,6 +79,7 @@ try {
   const outputReportFile = join(outputPath, 'cucumber.html')
   const runOpts = getDefaultExecOptions()
   const nodeTool = tl.tool(tl.which('node', true))
+  const reportName = tl.getInput('name', false);
   nodeTool.arg(['script.js'])
 
   runOpts.env = {
@@ -88,7 +89,7 @@ try {
     RAW_METADATA: tl.getInput('metadata', false),
     THEME: tl.getInput('theme', true),
     REPORT_TITLE: tl.getInput('title', false),
-    REPORT_NAME: tl.getInput('name', false)
+    REPORT_NAME: reportName
   }
 
   const nodeProcess = nodeTool.execSync(runOpts)
@@ -96,8 +97,8 @@ try {
     throw new Error('Failed to run script')
   }
 
-  console.log(`Uploading attachment file: ${outputReportFile} as type cucumber.report with name ${REPORT_NAME}.html`)
-  tl.addAttachment('cucumber.report', `${REPORT_NAME}.html`, outputReportFile)
+  console.log(`Uploading attachment file: ${outputReportFile} as type cucumber.report with name ${reportName}.html`)
+  tl.addAttachment('cucumber.report', `${reportName}.html`, outputReportFile)
 
   const screenshots = globby.sync(`${outputPath.replace(/\\/g, '/')}/screenshots/**.png`)
   screenshots.forEach(screenshotPath => {
