@@ -31,7 +31,7 @@
       "name": "outputPath",
       "type": "filePath",
       "label": "Output Directory",
-      "defaultValue": "$(Sytem.DefaultWorkingDirectory)",
+      "defaultValue": "$(System.DefaultWorkingDirectory)",
       "required": true,
       "helpMarkDown": "Directory where generated HTML output report is saved"
     },
