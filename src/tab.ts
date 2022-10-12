@@ -12,8 +12,12 @@ abstract class BaseReportTab extends Controls.BaseControl {
   protected readonly SCREENSHOT_TYPE: string = "cucumber.screenshot"
   protected readonly TASK_ID: string = '83c082c0-5032-11ea-8fab-bbe0f0fcf287'
 
+  private isFirstReport;
+
   protected constructor() {
     super();
+
+    this.isFirstReport = true;
   }
 
   protected convertBufferToString(buffer: ArrayBuffer): string {
@@ -44,6 +48,13 @@ abstract class BaseReportTab extends Controls.BaseControl {
     $("#cucumber-report-frame-menu")
       .append(frameMenuButton)
       .show()
+
+    if (this.isFirstReport) {
+      this.isFirstReport = false
+
+      frameMenuButton.trigger("click")
+    }
+
     console.log($(".cucumber-result"))
   }
 
