@@ -3,6 +3,6 @@
     "start": "node script.js"
   },
   "dependencies": {
-    "cucumber-html-reporter": "latest"
+    "cucumber-html-reporter": "5.5.1"
   }
 }
