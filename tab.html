@@ -16,6 +16,13 @@
 
     let displayReportFrame = function (reportFrame) {
       $(".cucumber-result").css("display", "none")
+      $(document).ready(function() {
+        $(".cucumber-result").css({
+         "overflow": "auto",
+        "max-height": "200px"
+      });
+});
+
       $(".cucumber-result").contents().find('html').html("about:none")
 
       $(`#${reportFrame}`)
