@@ -28,16 +28,16 @@ steps:
     workingDir: tasks/PublishCucumberReport
     verbose: false
 
-- task: PackageAzureDevOpsExtension@2
-  displayName: 'TFX: Package Extension'
-  inputs:
-    rootFolder: .
-    publisherId: MaciejMaciejewski
-    extensionId: 'azure-pipelines-cucumber'
-    extensionName: 'Cucumber HTML Report'
-    extensionVisibility: public
-    extensionPricing: free
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
+# - task: PackageAzureDevOpsExtension@2
+#   displayName: 'TFX: Package Extension'
+#   inputs:
+#     rootFolder: .
+#     publisherId: MaciejMaciejewski
+#     extensionId: 'azure-pipelines-cucumber'
+#     extensionName: 'Cucumber HTML Report'
+#     extensionVisibility: public
+#     extensionPricing: free
+#   condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
 
 - task: PackageAzureDevOpsExtension@2
   displayName: 'TFX: Package Extension Dev'
@@ -51,7 +51,7 @@ steps:
     updateTasksVersion: true
     extensionVisibility: private
     extensionPricing: free
-  condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
+  # condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
 - task: PublishAzureDevOpsExtension@2
   displayName: 'TFX: Publish Extension Dev'
@@ -65,7 +65,7 @@ steps:
     extensionVersion: '1.0.$(Build.BuildId)'
     extensionVisibility: private
     extensionPricing: free
-  condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
+  # condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
 - task: ShareAzureDevOpsExtension@2
   displayName: 'TFX: Share Extension'
@@ -74,7 +74,7 @@ steps:
     method: vsix
     vsixFile: '**.vsix'
     accounts: 'maciejmaciejewski-dev'
-  condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
+  # condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
 - task: CopyFiles@2
   displayName: 'Copy Files'
