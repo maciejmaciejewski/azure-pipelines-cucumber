@@ -42,7 +42,7 @@ abstract class BaseReportTab extends Controls.BaseControl {
 
     frame.attr("temp_src", htmlStr);
     
-    let frameMenuButton = $(`<button id="button-${frame.attr("id")}" onClick="displayReportFrame('${frame.attr('id')}')" class="bolt-button enabled bolt-focus-treatment" data-focuszone="focuszone-4" data-is-focusable="true" role="button" tabindex="0" type="button"><span class="bolt-button-text body-m">${reportName} (${frame.attr("id")})</span></button>`)
+    let frameMenuButton = $(`<button id="button-${frame.attr("id")}" onClick="displayReportFrame('${frame.attr('id')}')" class="report-button bolt-button enabled bolt-focus-treatment" data-focuszone="focuszone-4" data-is-focusable="true" role="button" tabindex="0" type="button"><span class="bolt-button-text body-m">${reportName} (${frame.attr("id")})</span></button>`)
 
     waiting.hide()
     $("#cucumber-report-frame-menu")
