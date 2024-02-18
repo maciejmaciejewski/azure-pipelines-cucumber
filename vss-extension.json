@@ -1,130 +1,131 @@
 {
-    "manifestVersion": 1,
-    "id": "azure-pipelines-cucumber",
-    "name": "Cucumber Report",
-    "publisher": "MaciejMaciejewski",
-    "public": false,
-    "author": "Maciej Maciejewski",
-    "version": "1.0.9",
-    "description": "Embed Cucumber HTML report in Azure Pipelines",
-    "galleryFlags": [],
-    "repository": {
-      "type": "git",
-      "uri": "https://github.com/maciejmaciejewski/azure-pipelines-cucumber"
+  "manifestVersion": 1,
+  "id": "azure-pipelines-cucumber",
+  "name": "Cucumber Report",
+  "publisher": "Kroll",
+  "public": false,
+  "author": "Kroll Devops",
+  "version": "1.0.9",
+  "description": "Embed Cucumber HTML report in Azure Pipelines",
+  "galleryFlags": [],
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/Sakshikroll/azure-pipelines-cucumber"
+  },
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "scopes": [
+    "vso.build_execute",
+    "vso.release_execute"
+  ],
+  "icons": {
+    "default": "images/cucumber-icon.png"
+  },
+  "demands": [
+    "api-version/3.0"
+  ],
+  "tags": [
+    "Cucumber",
+    "Build",
+    "Release",
+    "Azure Pipelines"
+  ],
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "content": {
+    "details": {
+      "path": "OVERVIEW.md"
     },
-    "targets": [
-      {
-        "id": "Microsoft.VisualStudio.Services"
-      }
-    ],
-    "scopes": [
-      "vso.build_execute",
-      "vso.release_execute"
-    ],
-    "icons": {
-      "default": "images/cucumber-icon.png"
+    "license": {
+      "path": "LICENSE"
+    }
+  },
+  "branding": {
+    "color": "rgb(220, 235, 252)",
+    "theme": "light"
+  },
+  "screenshots": [
+    {
+      "path": "images/build-tab.png"
     },
-    "demands": [
-      "api-version/3.0"
-    ],
-    "tags": [
-      "Cucumber",
-      "Build",
-      "Release",
-      "Azure Pipelines"
-    ],
-    "categories": [
-      "Azure Pipelines"
-    ],
-    "content": {
-      "details": {
-        "path": "OVERVIEW.md"
-      },
-      "license": {
-        "path": "LICENSE"
-      }
+    {
+      "path": "images/gui-configuration.png"
+    }
+  ],
+  "files": [
+    {
+      "path": "tab.html",
+      "addressable": true
     },
-    "branding": {
-      "color": "rgb(220, 235, 252)",
-      "theme": "light"
+    {
+      "path": "tasks/PublishCucumberReport"
     },
-    "screenshots": [
-      {
-        "path": "images/build-tab.png"
-      },
-      {
-        "path": "images/gui-configuration.png"
-      }
-    ],
-    "files": [
-      {
-        "path": "tab.html",
-        "addressable": true
-      },
-      {
-        "path": "tasks/PublishCucumberReport",
-        "addressable": true
-      },
-      {
-        "path": "node_modules/vss-web-extension-sdk/lib",
-        "packagePath": "lib",
-        "addressable": true
-      },
-      {
-        "path": "dist",
-        "addressable": true
-      },
-      {
-        "path": "src",
-        "addressable": true
-      },
-      {
-        "path": "images",
-        "addressable": true
-      }
-    ],
-    "contributions": [
-      {
-        "id": "build-cucumber-tab",
-        "type": "ms.vss-build-web.build-results-tab",
-        "description": "Embed Cucumber HTML report in Azure Pipelines",
-        "targets": [
-          "ms.vss-build-web.build-results-view"
+    {
+      "path": "node_modules/vss-web-extension-sdk/lib",
+      "packagePath": "lib"
+    },
+    {
+      "path": "dist"
+    },
+    {
+      "path": "src"
+    },
+    {
+      "path": "images"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "build-cucumber-tab",
+      "type": "ms.vss-build-web.build-results-tab",
+      "description": "Embed Cucumber HTML report in Azure Pipelines",
+      "targets": [
+        "ms.vss-build-web.build-results-view"
+      ],
+      "properties": {
+        "name": "Cucumber",
+        "uri": "tab.html",
+        "registeredObjectId": "registerBuild",
+        "supportsTasks": [
+          "83c082c0-5032-11ea-8fab-bbe0f0fcf287"
         ],
-        "properties": {
-          "name": "Cucumber",
-          "uri": "tab.html",
-          "registeredObjectId": "registerBuild",
-          "supportsTasks": ["83c082c0-5032-11ea-8fab-bbe0f0fcf287"],
-          "dynamic": true
-        },
-        "includes": [
-          "ms.vss-releaseManagement-web.release-service-data-external"
-        ]
+        "dynamic": true
       },
-      {
-        "id": "release-cucumber-tab",
-        "type": "ms.vss-web.tab",
-        "description": "Embed Cucumber HTML report in Azure Pipelines",
-        "targets": [ "ms.vss-releaseManagement-web.release-environment-editor-tab" ],
-        "properties": {
-          "name": "Cucumber",
-          "uri": "tab.html",
-          "registeredObjectId": "registerRelease",
-          "dynamic": true
-        },
-        "includes": ["ms.vss-releaseManagement-web.release-service-data-external"]
+      "includes": [
+        "ms.vss-releaseManagement-web.release-service-data-external"
+      ]
+    },
+    {
+      "id": "release-cucumber-tab",
+      "type": "ms.vss-web.tab",
+      "description": "Embed Cucumber HTML report in Azure Pipelines",
+      "targets": [
+        "ms.vss-releaseManagement-web.release-environment-editor-tab"
+      ],
+      "properties": {
+        "name": "Cucumber",
+        "uri": "tab.html",
+        "registeredObjectId": "registerRelease",
+        "dynamic": true
       },
-      {
-        "id": "PublishCucumberReport",
-        "type": "ms.vss-distributed-task.task",
-        "targets": [
-          "ms.vss-distributed-task.tasks"
-        ],
-        "properties": {
-          "name": "tasks/PublishCucumberReport",
-          "displayName": "Publish Cucumber Report"
-        }
+      "includes": [
+        "ms.vss-releaseManagement-web.release-service-data-external"
+      ]
+    },
+    {
+      "id": "PublishCucumberReport",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "tasks/PublishCucumberReport",
+        "displayName": "Publish Cucumber Report"
       }
-    ]
-  }
+    }
+  ]
+}
