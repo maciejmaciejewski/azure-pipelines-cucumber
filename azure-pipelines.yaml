@@ -6,44 +6,28 @@ trigger:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '18.x'
+    versionSpec: '12.x'
 
 - task: Npm@1
   displayName: 'NPM: Install Extension Dependencies'
   inputs:
     workingDir: .
-    verbose: true
-    command: install
+    verbose: false
 
 - task: Npm@1
   displayName: 'NPM: Build Extension'
   inputs:
     command: custom
     workingDir: .
-    verbose: true
+    verbose: false
     customCommand: 'run build'
 
 - task: Npm@1
   displayName: 'NPM: Install Task Dependencies'
   inputs:
     workingDir: tasks/PublishCucumberReport
-    verbose: true
+    verbose: false
 
-- task: Bash@3
-  displayName: 'Install tfx'
-  inputs:
-    targetType: inline
-    script: |
-      npm i -g tfx-cli
-      npm i -g azure-devops-extension-sdk
-      npm i -g vss-web-extension-sdk
-      tfx extension create --manifest-globs vss-extension.json
-- task: Bash@3
-  displayName: 'Publish Extension'
-  inputs:
-    targetType: inline
-    script: |
-      tfx extension publish --manifest-globs vss-extension.json  --token  --override "{\"version\": \"1.0.$(Build.BuildId)\"}"      
 # - task: PackageAzureDevOpsExtension@2
 #   displayName: 'TFX: Package Extension'
 #   inputs:
@@ -55,42 +39,42 @@ steps:
 #     extensionPricing: free
 #   condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
 
-# - task: PackageAzureDevOpsExtension@4
-#   displayName: 'TFX: Package Extension Dev'
-#   inputs:
-#     rootFolder: .
-#     publisherId: Kroll
-#     extensionId: 'azure-pipelines-cucumber'
-#     extensionTag: dev
-#     extensionName: 'Cucumber HTML Report Dev'
-#     extensionVersion: '1.0.$(Build.BuildId)'
-#     updateTasksVersion: true
-#     extensionVisibility: private
-#     extensionPricing: free
+- task: PackageAzureDevOpsExtension@2
+  displayName: 'TFX: Package Extension Dev'
+  inputs:
+    rootFolder: .
+    publisherId: MaciejMaciejewski
+    extensionId: 'azure-pipelines-cucumber'
+    extensionTag: dev
+    extensionName: 'Cucumber HTML Report Dev'
+    extensionVersion: '1.0.$(Build.BuildId)'
+    updateTasksVersion: true
+    extensionVisibility: private
+    extensionPricing: free
   # condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
-# - task: PublishAzureDevOpsExtension@4
-#   displayName: 'TFX: Publish Extension Dev'
-#   inputs:
-#     connectedServiceName: Marketplace
-#     rootFolder: .
-#     publisherId: MaciejMaciejewski
-#     extensionId: 'azure-pipelines-cucumber'
-#     extensionTag: dev
-#     extensionName: 'Cucumber HTML Report Dev'
-#     extensionVersion: '1.0.$(Build.BuildId)'
-#     extensionVisibility: private
-#     extensionPricing: free
-#   # condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
+- task: PublishAzureDevOpsExtension@2
+  displayName: 'TFX: Publish Extension Dev'
+  inputs:
+    connectedServiceName: Marketplace
+    rootFolder: .
+    publisherId: MaciejMaciejewski
+    extensionId: 'azure-pipelines-cucumber'
+    extensionTag: dev
+    extensionName: 'Cucumber HTML Report Dev'
+    extensionVersion: '1.0.$(Build.BuildId)'
+    extensionVisibility: private
+    extensionPricing: free
+  # condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
-# - task: ShareAzureDevOpsExtension@4
-#   displayName: 'TFX: Share Extension'
-#   inputs:
-#     connectedServiceName: Marketplace
-#     method: vsix
-#     vsixFile: '**.vsix'
-#     accounts: 'maciejmaciejewski-dev'
-#   # condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
+- task: ShareAzureDevOpsExtension@2
+  displayName: 'TFX: Share Extension'
+  inputs:
+    connectedServiceName: Marketplace
+    method: vsix
+    vsixFile: '**.vsix'
+    accounts: 'maciejmaciejewski-dev'
+  # condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
 - task: CopyFiles@2
   displayName: 'Copy Files'
@@ -105,5 +89,3 @@ steps:
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/results'
   condition: succeededOrFailed()
-
-
