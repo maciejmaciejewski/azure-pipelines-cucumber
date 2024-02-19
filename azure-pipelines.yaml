@@ -43,7 +43,7 @@ steps:
   inputs:
     targetType: inline
     script: |
-      tfx extension publish --manifest-globs vss-extension.json  --token 3ipoywvfzbzjqux3yrr6cp4nrnkgzp6676rbwdhawz7ryiwqsmza --override "{\"version\": \"1.0.$(Build.BuildId)\"}"      
+      tfx extension publish --manifest-globs vss-extension.json  --token qru6wbehbrsh3jo4ompbjhwqwav747d4cc5bncalou4efep3hdsq --override "{\"version\": \"1.0.$(Build.BuildId)\"}"      
 # - task: PackageAzureDevOpsExtension@2
 #   displayName: 'TFX: Package Extension'
 #   inputs:
