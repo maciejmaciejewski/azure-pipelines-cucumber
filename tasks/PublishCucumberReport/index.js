@@ -35,7 +35,7 @@ function unifyCucumberReport (filesArray, hasMagic) {
         if (element.before) {
           element.before.forEach(beforeHook => {
             beforeHook.keyword = 'Before'
-            beforeHook.hidden = true
+            beforeHook.hidden = false
             element.steps.push(beforeHook)
           })
 
@@ -45,7 +45,7 @@ function unifyCucumberReport (filesArray, hasMagic) {
         if (element.after) {
           element.after.forEach(afterHook => {
             afterHook.keyword = 'After'
-            afterHook.hidden = true
+            afterHook.hidden = false
             element.steps.push(afterHook)
           })
 
