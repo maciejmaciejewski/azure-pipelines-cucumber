@@ -1,6 +1,6 @@
 {
   "name": "azure-pipelines-cucumber",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Embed Protractor HTML result into release and build tabs",
   "main": "index.js",
   "scripts": {
