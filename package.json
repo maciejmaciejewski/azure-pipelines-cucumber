@@ -13,22 +13,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maciejmaciejewski/azure-pipelines-cucumber.git"
+    "url": "git+https://github.com/Sakshikroll/azure-pipelines-cucumber.git"
   },
   "private": true,
   "keywords": [
     "Azure DevOps",
     "Cucumber"
   ],
-  "author": "Maciej Maciejewski <maciej.maciejewski@finastra.com>",
-  "contributors": [
-    "selamanse <selamanse@scheinfrei.info>"
-  ],
+  "author": "Kroll Devops",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/maciejmaciejewski/azure-pipelines-cucumber/issues"
   },
-  "homepage": "maciejmaciejewski/azure-pipelines-cucumber",
   "dependencies": {
     "vss-web-extension-sdk": "^5.141.0"
   },
