@@ -34,8 +34,8 @@
   },
   "devDependencies": {
     "@types/node": "22.10.9",
-    "semver": "^7.3.5",
-    "tfx-cli": "^0.9.3",
+    "semver": "7.6.3",
+    "tfx-cli": "0.18.0",
     "typescript": "5.7.3"
   }
 }
