@@ -33,9 +33,9 @@
     "vss-web-extension-sdk": "^5.141.0"
   },
   "devDependencies": {
-    "@types/node": "^13.7.4",
+    "@types/node": "22.10.9",
     "semver": "^7.3.5",
     "tfx-cli": "^0.9.3",
-    "typescript": "^3.9.7"
+    "typescript": "5.7.3"
   }
 }
