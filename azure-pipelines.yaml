@@ -28,6 +28,10 @@ steps:
     workingDir: tasks/PublishCucumberReport
     verbose: false
 
+- task: TfxInstaller@5
+  inputs:
+    version: 'v0.x'
+
 - task: PackageAzureDevOpsExtension@5
   displayName: 'TFX: Package Extension'
   inputs:
