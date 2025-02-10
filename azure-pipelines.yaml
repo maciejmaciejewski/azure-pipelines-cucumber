@@ -28,7 +28,7 @@ steps:
     workingDir: tasks/PublishCucumberReport
     verbose: false
 
-- task: PackageAzureDevOpsExtension@2
+- task: PackageAzureDevOpsExtension@5
   displayName: 'TFX: Package Extension'
   inputs:
     rootFolder: .
@@ -39,7 +39,7 @@ steps:
     extensionPricing: free
   condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
 
-- task: PackageAzureDevOpsExtension@2
+- task: PackageAzureDevOpsExtension@5
   displayName: 'TFX: Package Extension Dev'
   inputs:
     rootFolder: .
@@ -53,7 +53,7 @@ steps:
     extensionPricing: free
   condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
-- task: PublishAzureDevOpsExtension@2
+- task: PublishAzureDevOpsExtension@5
   displayName: 'TFX: Publish Extension Dev'
   inputs:
     connectedServiceName: Marketplace
@@ -67,7 +67,7 @@ steps:
     extensionPricing: free
   condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
-- task: ShareAzureDevOpsExtension@2
+- task: ShareAzureDevOpsExtension@5
   displayName: 'TFX: Share Extension'
   inputs:
     connectedServiceName: Marketplace
