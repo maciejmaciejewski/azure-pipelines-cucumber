@@ -6,7 +6,7 @@ trigger:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '18.x'
+    versionSpec: '20.x'
 
 - task: Npm@1
   displayName: 'NPM: Install Extension Dependencies'
