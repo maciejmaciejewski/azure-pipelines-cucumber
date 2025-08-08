@@ -19,7 +19,7 @@ Once the file is saved it can be useda as an input to the Publish task.
 
 ### Parameters
 
-`jsonDir` - path where task looks for JSON files and then combines them into single report. This parameter supports wildcards, if used all files will get consolidated into single report. Use this option with caution as the task will go through all located JSON files and non-cucumber files reporter will throw an error.
+`jsonDir` - path where task looks for JSON files and then combines them into single report. This parameter supports wildcards, if used all files from any matching sub-path will get consolidated into single report. Use this option with caution as the task will go through all located JSON files and non-cucumber files reporter will throw an error.
 
 `outputPath` - path where task saves output HTML report
 
@@ -55,7 +55,7 @@ Because of that it is required to have NodeJS installed on AzureDevOps Agent mac
 
 ```YAML
 - task: NodeTool@0
-  displayName: 'Install Node 12.x'
+  displayName: 'Install Node 20.x'
   inputs:
-    versionSpec: 12.x
+    versionSpec: 20.x
 ```

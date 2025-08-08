@@ -63,7 +63,7 @@ Because of that it is required to have NodeJS installed on AzureDevOps Agent mac
 
 ```YAML
 - task: NodeTool@0
-  displayName: 'Install Node 12.x'
+  displayName: 'Install Node 20.x'
   inputs:
-    versionSpec: 12.x
+    versionSpec: 20.x
 ```
