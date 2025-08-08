@@ -5,7 +5,7 @@
     "publisher": "MaciejMaciejewski",
     "public": false,
     "author": "Maciej Maciejewski",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "description": "Embed Cucumber HTML report in Azure Pipelines",
     "galleryFlags": [],
     "repository": {
