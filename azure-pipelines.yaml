@@ -2,7 +2,12 @@ trigger:
   branches:
     include:
     - master
-
+pr:
+  branches:
+    include:
+    - master
+  drafts: false
+  
 steps:
 - task: NodeTool@0
   inputs:
