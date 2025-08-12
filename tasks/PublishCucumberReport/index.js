@@ -10,7 +10,6 @@ function getDefaultExecOptions () {
   execOptions.cwd = join(__dirname, './reporter')
   execOptions.failOnStdErr = false
   execOptions.ignoreReturnCode = false
-  execOptions.windowsVerbatimArguments = true
   return execOptions
 }
 
@@ -69,9 +68,10 @@ try {
     throw new Error('Failed to install dependencies')
   }
 
-  const inputPath = (tl.getPathInput('jsonDir', true, false)).replace(/\\/g, '/')
-  const pathHasMagic = globby.hasMagic(inputPath)
-  const files = globby.sync([`${inputPath}/*.json`])
+  const inputPath = tl.getPathInput('jsonDir', true, false)
+  const normalizedInputPath = inputPath.replace(/\\/g, '/')
+  const pathHasMagic = globby.hasMagic(normalizedInputPath)
+  const files = globby.sync([`${normalizedInputPath}/*.json`])
   console.log(`Found ${files.length} matching ${inputPath} pattern`)
 
   unifyCucumberReport(files, pathHasMagic)
@@ -83,7 +83,7 @@ try {
   nodeTool.arg(['script.js'])
 
   runOpts.env = {
-    JSON_DIR: pathHasMagic ? consolidatedPath : inputPath,
+    JSON_DIR: pathHasMagic ? consolidatedPath : normalizedInputPath,
     OUTPUT_PATH: outputReportFile,
     REPORT_SUITES_AS_SCENARIOS: tl.getBoolInput('reportSuiteAsScenarios', true),
     RAW_METADATA: tl.getInput('metadata', false),
@@ -100,7 +100,8 @@ try {
   console.log(`Uploading attachment file: ${outputReportFile} as type cucumber.report with name ${reportName}.html`)
   tl.addAttachment('cucumber.report', `${reportName}.html`, outputReportFile)
 
-  const screenshots = globby.sync(`${outputPath.replace(/\\/g, '/')}/screenshots/**.png`)
+  const normalizedOutputPath = outputPath.replace(/\\/g, '/')
+  const screenshots = globby.sync(`${normalizedOutputPath}/screenshots/**.png`)
   screenshots.forEach(screenshotPath => {
     tl.addAttachment('cucumber.screenshot', basename(screenshotPath), screenshotPath)
     console.log(`Uploading Screenshot ${screenshotPath}`)
