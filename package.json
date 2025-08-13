@@ -1,6 +1,6 @@
 {
   "name": "azure-pipelines-cucumber",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Embed Cucumber HTML result into release and build tabs",
   "main": "index.js",
   "scripts": {
