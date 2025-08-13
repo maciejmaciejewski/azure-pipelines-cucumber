@@ -90,6 +90,10 @@
     "Node20_1": {
       "target": "index.js",
       "argumentFormat": ""
+    },
+    "Node": {
+      "target": "index.js",
+      "argumentFormat": ""
     }
   }
 }
