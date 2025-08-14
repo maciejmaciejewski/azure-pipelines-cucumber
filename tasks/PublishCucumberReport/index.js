@@ -2,6 +2,7 @@ const tl = require('azure-pipelines-task-lib')
 const { join, basename } = require('path')
 const { ensureDirSync, readFileSync, writeFileSync } = require('fs-extra')
 const globby = require('globby')
+const { hasMagic } = require('glob')
 const hat = require('hat')
 let consolidatedPath
 
@@ -70,7 +71,7 @@ try {
 
   const inputPath = tl.getPathInput('jsonDir', true, false)
   const normalizedInputPath = inputPath.replace(/\\/g, '/')
-  const pathHasMagic = globby.hasMagic(normalizedInputPath)
+  const pathHasMagic = hasMagic(normalizedInputPath)
   const files = globby.sync([`${normalizedInputPath}/*.json`])
   console.log(`Found ${files.length} matching ${inputPath} pattern`)
 
