@@ -108,13 +108,14 @@ try {
     throw new Error('Failed to run script')
   }
 
-  console.log(`Uploading attachment file: ${outputReportFile} as type cucumber.report with name ${reportName}.html`)
-  tl.addAttachment('cucumber.report', `${reportName}.html`, outputReportFile)
+  const finalReportName = reportName || 'CucumberReport'
+  console.log(`Uploading attachment file: ${outputReportFile} as type cucumber.report with name ${finalReportName}.html`)
+  tl.addAttachment('cucumber.report', `${finalReportName}.html`, outputReportFile)
 
   const normalizedOutputPath = outputPath.replace(/\\/g, '/')
-  const screenshots = globby.sync(`${normalizedOutputPath}/screenshots/**.png`)
+  const screenshots = glob.sync(`${normalizedOutputPath}/screenshots/**.png`)
   screenshots.forEach(screenshotPath => {
-    tl.addAttachment('cucumber.screenshot', basename(screenshotPath), screenshotPath)
+    tl.addAttachment('cucumber.screenshot', path.basename(screenshotPath), screenshotPath)
     console.log(`Uploading Screenshot ${screenshotPath}`)
   })
 } catch (e) {
