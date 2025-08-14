@@ -1,0 +1,12 @@
+node_modules/
+.git/
+.gitignore
+package-lock.json
+*.log
+.DS_Store
+.vscode/
+.idea/
+*.vsix
+my-first-extension/
+azure-pipelines.yaml
+.editorconfig

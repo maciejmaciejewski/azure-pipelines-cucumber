@@ -1,9 +1,9 @@
 {
-  "id": "83c082c0-5032-11ea-8fab-bbe0f0fcf287",
+  "id": "42cfa816-d709-4086-9568-7287ea18beb1",
   "name": "PublishCucumberReport",
   "friendlyName": "Publish Cucumber Report",
   "description": "Publish Cucumber Report",
-  "author": "Maciej Maciejewski",
+  "author": "Erdinç Yılmaz",
   "helpMarkDown": "Replace with markdown to show in help",
   "category": "Utility",
   "visibility": [
@@ -14,9 +14,9 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "15"
+    "Patch": "0"
   },
-  "minimumAgentVersion": "2.144.0",
+  "minimumAgentVersion": "2.115.0",
   "instanceNameFormat": "Publish Cucumber Report",
   "inputs": [
     {
@@ -88,6 +88,14 @@
   ],
   "execution": {
     "Node20_1": {
+      "target": "index.js",
+      "argumentFormat": ""
+    },
+    "Node16": {
+      "target": "index.js",
+      "argumentFormat": ""
+    },
+    "Node10": {
       "target": "index.js",
       "argumentFormat": ""
     },

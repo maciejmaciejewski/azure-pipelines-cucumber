@@ -1,14 +1,14 @@
 const tl = require('azure-pipelines-task-lib')
-const { join, basename } = require('path')
-const { ensureDirSync, readFileSync, writeFileSync } = require('fs-extra')
+const path = require('path')
+const fs = require('fs-extra')
 const globby = require('globby')
-const { hasMagic } = require('glob')
+const glob = require('glob')
 const hat = require('hat')
 let consolidatedPath
 
 function getDefaultExecOptions () {
   let execOptions = {}
-  execOptions.cwd = join(__dirname, './reporter')
+  execOptions.cwd = path.join(__dirname, './reporter')
   execOptions.failOnStdErr = false
   execOptions.ignoreReturnCode = false
   return execOptions
@@ -17,14 +17,14 @@ function getDefaultExecOptions () {
 function unifyCucumberReport (filesArray, hasMagic) {
   if (hasMagic) {
     consolidatedPath = `${process.env.SYSTEM_DEFAULTWORKINGDIRECTORY}/cucumber-html-reporter/${hat()}/consolidated`
-    ensureDirSync(consolidatedPath)
+    fs.ensureDirSync(consolidatedPath)
     console.log('Wildcard path detected')
     console.log(`Merging report into ${consolidatedPath}`)
   }
 
   filesArray.forEach(filePath => {
     console.log(`Processing ${filePath}`)
-    const rawContent = readFileSync(filePath, 'utf-8')
+    const rawContent = fs.readFileSync(filePath, 'utf-8')
     const jsonContent = JSON.parse(rawContent)
 
     jsonContent.forEach(feature => {
@@ -54,9 +54,9 @@ function unifyCucumberReport (filesArray, hasMagic) {
       })
     })
 
-    const savePath = hasMagic ? join(consolidatedPath, basename(filePath)) : filePath
+    const savePath = hasMagic ? path.join(consolidatedPath, path.basename(filePath)) : filePath
     console.log(`Saving modified report as ${savePath}`)
-    writeFileSync(savePath, JSON.stringify(jsonContent, null, 2))
+    fs.writeFileSync(savePath, JSON.stringify(jsonContent, null, 2))
   })
 }
 
@@ -71,13 +71,13 @@ try {
 
   const inputPath = tl.getPathInput('jsonDir', true, false)
   const normalizedInputPath = inputPath.replace(/\\/g, '/')
-  const pathHasMagic = hasMagic(normalizedInputPath)
+  const pathHasMagic = glob.hasMagic(normalizedInputPath)
   const files = globby.sync([`${normalizedInputPath}/*.json`])
   console.log(`Found ${files.length} matching ${inputPath} pattern`)
 
   unifyCucumberReport(files, pathHasMagic)
   const outputPath = tl.getPathInput('outputPath', true, true)
-  const outputReportFile = join(outputPath, 'cucumber.html')
+  const outputReportFile = path.join(outputPath, 'cucumber.html')
   const runOpts = getDefaultExecOptions()
   const nodeTool = tl.tool(tl.which('node', true))
   const reportName = tl.getInput('name', false);

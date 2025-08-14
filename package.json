@@ -1,6 +1,6 @@
 {
   "name": "azure-pipelines-cucumber",
-  "version": "1.0.15",
+  "version": "1.0.0",
   "description": "Embed Cucumber HTML result into release and build tabs",
   "main": "index.js",
   "scripts": {
@@ -20,8 +20,9 @@
     "Azure DevOps",
     "Cucumber"
   ],
-  "author": "Maciej Maciejewski <maciej.maciejewski@outlook.com>",
+  "author": "Erdinç Yılmaz",
   "contributors": [
+    "Maciej Maciejewski <maciej.maciejewski@outlook.com>",
     "selamanse <selamanse@scheinfrei.info>"
   ],
   "license": "ISC",

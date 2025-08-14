@@ -1,11 +1,11 @@
 {
     "manifestVersion": 1,
-    "id": "azure-pipelines-cucumber",
+    "id": "cucumber-html-report",
     "name": "Cucumber Report",
-    "publisher": "MaciejMaciejewski",
-    "public": false,
-    "author": "Maciej Maciejewski",
-    "version": "1.0.15",
+    "publisher": "erdncyz",
+    "public": true,
+    "author": "Erdinç Yılmaz",
+    "version": "1.0.0",
     "description": "Embed Cucumber HTML report in Azure Pipelines",
     "galleryFlags": [],
     "repository": {
@@ -66,16 +66,7 @@
         "addressable": true
       },
       {
-        "path": "node_modules/vss-web-extension-sdk/lib",
-        "packagePath": "lib",
-        "addressable": true
-      },
-      {
         "path": "dist",
-        "addressable": true
-      },
-      {
-        "path": "src",
         "addressable": true
       },
       {
@@ -95,7 +86,7 @@
           "name": "Cucumber",
           "uri": "tab.html",
           "registeredObjectId": "registerBuild",
-          "supportsTasks": ["83c082c0-5032-11ea-8fab-bbe0f0fcf287"],
+          "supportsTasks": ["42cfa816-d709-4086-9568-7287ea18beb1"],
           "dynamic": true
         },
         "includes": [
