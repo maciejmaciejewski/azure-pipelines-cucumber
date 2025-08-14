@@ -5,7 +5,7 @@
     "publisher": "erdncyz",
     "public": true,
     "author": "Erdinç Yılmaz",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Embed Cucumber HTML report in Azure Pipelines",
     "galleryFlags": [],
     "repository": {

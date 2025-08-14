@@ -1,5 +1,5 @@
 [![Donate](https://img.shields.io/static/v1?logo=paypal&label=PayPal&message=Donate&color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZH953HFWKBJFA)
-[![Build Status](https://dev.azure.com/maciejmaciejewski-dev/extensions/_apis/build/status/maciejmaciejewski.azure-pipelines-cucumber?branchName=master)](https://dev.azure.com/maciejmaciejewski-dev/extensions/_build/latest?definitionId=15&branchName=master)
+[![Build Status](https://dev.azure.com/erdncyz/extensions/_apis/build/status/erdncyz.azure-pipelines-cucumber?branchName=master)](https://dev.azure.com/erdncyz/extensions/_build/latest?definitionId=15&branchName=master)
 
 # Azure Pipelines Cucumber Reporter
 

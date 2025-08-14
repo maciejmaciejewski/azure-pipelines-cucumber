@@ -2,7 +2,6 @@ const tl = require('azure-pipelines-task-lib')
 const path = require('path')
 const fs = require('fs-extra')
 const glob = require('glob')
-const hat = require('hat')
 let consolidatedPath
 
 function getDefaultExecOptions () {
@@ -13,9 +12,13 @@ function getDefaultExecOptions () {
   return execOptions
 }
 
+function generateId() {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+}
+
 function unifyCucumberReport (filesArray, hasMagic) {
   if (hasMagic) {
-    consolidatedPath = `${process.env.SYSTEM_DEFAULTWORKINGDIRECTORY}/cucumber-html-reporter/${hat()}/consolidated`
+    consolidatedPath = `${process.env.SYSTEM_DEFAULTWORKINGDIRECTORY}/cucumber-html-reporter/${generateId()}/consolidated`
     fs.ensureDirSync(consolidatedPath)
     console.log('Wildcard path detected')
     console.log(`Merging report into ${consolidatedPath}`)

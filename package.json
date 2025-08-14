@@ -1,6 +1,6 @@
 {
   "name": "azure-pipelines-cucumber",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Embed Cucumber HTML result into release and build tabs",
   "main": "index.js",
   "scripts": {
@@ -22,14 +22,13 @@
   ],
   "author": "Erdinç Yılmaz",
   "contributors": [
-    "Maciej Maciejewski <maciej.maciejewski@outlook.com>",
     "selamanse <selamanse@scheinfrei.info>"
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/maciejmaciejewski/azure-pipelines-cucumber/issues"
+    "url": "https://github.com/erdncyz/azure-pipelines-cucumber/issues"
   },
-  "homepage": "maciejmaciejewski/azure-pipelines-cucumber",
+  "homepage": "erdncyz/azure-pipelines-cucumber",
   "dependencies": {
     "vss-web-extension-sdk": "^5.141.0"
   },
