@@ -5,12 +5,12 @@
     "publisher": "erdncyz",
     "public": true,
     "author": "Erdinç Yılmaz",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "Embed Cucumber HTML report in Azure Pipelines",
     "galleryFlags": [],
     "repository": {
       "type": "git",
-      "uri": "https://github.com/maciejmaciejewski/azure-pipelines-cucumber"
+      "uri": "https://github.com/erdncyz/azure-pipelines-cucumber"
     },
     "targets": [
       {

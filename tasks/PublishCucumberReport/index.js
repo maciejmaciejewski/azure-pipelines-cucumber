@@ -1,7 +1,6 @@
 const tl = require('azure-pipelines-task-lib')
 const path = require('path')
 const fs = require('fs-extra')
-const globby = require('globby')
 const glob = require('glob')
 const hat = require('hat')
 let consolidatedPath
@@ -72,7 +71,7 @@ try {
   const inputPath = tl.getPathInput('jsonDir', true, false)
   const normalizedInputPath = inputPath.replace(/\\/g, '/')
   const pathHasMagic = glob.hasMagic(normalizedInputPath)
-  const files = globby.sync([`${normalizedInputPath}/*.json`])
+  const files = glob.sync(`${normalizedInputPath}/*.json`)
   console.log(`Found ${files.length} matching ${inputPath} pattern`)
 
   unifyCucumberReport(files, pathHasMagic)
