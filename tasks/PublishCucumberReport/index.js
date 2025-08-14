@@ -77,6 +77,14 @@ try {
   const files = glob.sync(`${normalizedInputPath}/*.json`)
   console.log(`Found ${files.length} matching ${inputPath} pattern`)
 
+  if (files.length === 0) {
+    console.log(`No JSON files found in directory: ${normalizedInputPath}`)
+    console.log('Creating empty report directory structure...')
+    fs.ensureDirSync(normalizedInputPath)
+    tl.setResult(tl.TaskResult.SucceededWithIssues)
+    return
+  }
+
   unifyCucumberReport(files, pathHasMagic)
   const outputPath = tl.getPathInput('outputPath', true, true)
   const outputReportFile = path.join(outputPath, 'cucumber.html')
