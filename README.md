@@ -7,6 +7,10 @@ Azure DevOps extension that provides a task for publishing Cucumber report in a 
 
 The extension is and will remain free of charge, however if you would like to support me please consider donating by using the PayPal button above.
 
+## Node.js Compatibility
+
+This extension is compatible with Node.js versions 8.x and above. The task uses `globby` version 8.x for better compatibility with older Node.js environments commonly found in Azure DevOps agents.
+
 ## Configuration
 
 This extension reads Cucumber run report saved in JSON format. In order to get such file one needs to set up formater in Cucumber runner as following.
