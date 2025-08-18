@@ -77,9 +77,9 @@ steps:
   condition: and(succeeded(), ne(variables['Build.SourceBranchName'], 'master'))
 
 - task: ShareAzureDevOpsExtension@5
-  displayName: 'TFX: Share Extension'
+  displayName: 'TFX: Share Dev Extension for tests'
   inputs:
-    connectedServiceName: Marketplace
+    connectedServiceName: 'Marketplace-share'
     method: vsix
     vsixFile: '**.vsix'
     accounts: 'maciejmaciejewski-dev'
