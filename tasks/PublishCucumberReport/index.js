@@ -2,6 +2,7 @@ const tl = require('azure-pipelines-task-lib')
 const { join, basename } = require('path')
 const { ensureDirSync, readFileSync, writeFileSync } = require('fs-extra')
 const globby = require('globby')
+const { hasMagic } = require('glob')
 const hat = require('hat')
 let consolidatedPath
 
@@ -59,54 +60,58 @@ function unifyCucumberReport (filesArray, hasMagic) {
   })
 }
 
-try {
-  const tool = tl.tool(tl.which('npm', true))
-  tool.arg(['install'])
-  const npmProcess = tool.execSync(getDefaultExecOptions())
+async function main() {
+  try {
+    const tool = tl.tool(tl.which('npm', true))
+    tool.arg(['install'])
+    const npmProcess = tool.execSync(getDefaultExecOptions())
 
-  if (npmProcess.code !== 0) {
-    throw new Error('Failed to install dependencies')
+    if (npmProcess.code !== 0) {
+      throw new Error('Failed to install dependencies')
+    }
+
+    const inputPath = tl.getPathInput('jsonDir', true, false)
+    const normalizedInputPath = inputPath.replace(/\\/g, '/')
+    const pathHasMagic = hasMagic(normalizedInputPath)
+    const files = await globby([`${normalizedInputPath}/*.json`])
+    console.log(`Found ${files.length} matching ${inputPath} pattern`)
+
+    unifyCucumberReport(files, pathHasMagic)
+    const outputPath = tl.getPathInput('outputPath', true, true)
+    const outputReportFile = join(outputPath, 'cucumber.html')
+    const runOpts = getDefaultExecOptions()
+    const nodeTool = tl.tool(tl.which('node', true))
+    const reportName = tl.getInput('name', false);
+    nodeTool.arg(['script.js'])
+
+    runOpts.env = {
+      JSON_DIR: pathHasMagic ? consolidatedPath : normalizedInputPath,
+      OUTPUT_PATH: outputReportFile,
+      REPORT_SUITES_AS_SCENARIOS: tl.getBoolInput('reportSuiteAsScenarios', true),
+      RAW_METADATA: tl.getInput('metadata', false),
+      THEME: tl.getInput('theme', true),
+      REPORT_TITLE: tl.getInput('title', false),
+      REPORT_NAME: reportName
+    }
+
+    const nodeProcess = nodeTool.execSync(runOpts)
+    if (nodeProcess.code !== 0) {
+      throw new Error('Failed to run script')
+    }
+
+    console.log(`Uploading attachment file: ${outputReportFile} as type cucumber.report with name ${reportName}.html`)
+    tl.addAttachment('cucumber.report', `${reportName}.html`, outputReportFile)
+
+    const normalizedOutputPath = outputPath.replace(/\\/g, '/')
+    const screenshots = await globby(`${normalizedOutputPath}/screenshots/**.png`)
+    screenshots.forEach(screenshotPath => {
+      tl.addAttachment('cucumber.screenshot', basename(screenshotPath), screenshotPath)
+      console.log(`Uploading Screenshot ${screenshotPath}`)
+    })
+  } catch (e) {
+    tl.warning(e)
+    tl.setResult(tl.TaskResult.SucceededWithIssues)
   }
-
-  const inputPath = tl.getPathInput('jsonDir', true, false)
-  const normalizedInputPath = inputPath.replace(/\\/g, '/')
-  const pathHasMagic = globby.hasMagic(normalizedInputPath)
-  const files = globby.sync([`${normalizedInputPath}/*.json`])
-  console.log(`Found ${files.length} matching ${inputPath} pattern`)
-
-  unifyCucumberReport(files, pathHasMagic)
-  const outputPath = tl.getPathInput('outputPath', true, true)
-  const outputReportFile = join(outputPath, 'cucumber.html')
-  const runOpts = getDefaultExecOptions()
-  const nodeTool = tl.tool(tl.which('node', true))
-  const reportName = tl.getInput('name', false);
-  nodeTool.arg(['script.js'])
-
-  runOpts.env = {
-    JSON_DIR: pathHasMagic ? consolidatedPath : normalizedInputPath,
-    OUTPUT_PATH: outputReportFile,
-    REPORT_SUITES_AS_SCENARIOS: tl.getBoolInput('reportSuiteAsScenarios', true),
-    RAW_METADATA: tl.getInput('metadata', false),
-    THEME: tl.getInput('theme', true),
-    REPORT_TITLE: tl.getInput('title', false),
-    REPORT_NAME: reportName
-  }
-
-  const nodeProcess = nodeTool.execSync(runOpts)
-  if (nodeProcess.code !== 0) {
-    throw new Error('Failed to run script')
-  }
-
-  console.log(`Uploading attachment file: ${outputReportFile} as type cucumber.report with name ${reportName}.html`)
-  tl.addAttachment('cucumber.report', `${reportName}.html`, outputReportFile)
-
-  const normalizedOutputPath = outputPath.replace(/\\/g, '/')
-  const screenshots = globby.sync(`${normalizedOutputPath}/screenshots/**.png`)
-  screenshots.forEach(screenshotPath => {
-    tl.addAttachment('cucumber.screenshot', basename(screenshotPath), screenshotPath)
-    console.log(`Uploading Screenshot ${screenshotPath}`)
-  })
-} catch (e) {
-  tl.warning(e)
-  tl.setResult(tl.TaskResult.SucceededWithIssues)
 }
+
+main()
