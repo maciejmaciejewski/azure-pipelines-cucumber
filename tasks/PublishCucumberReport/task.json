@@ -87,6 +87,10 @@
     }
   ],
   "execution": {
+    "Node24": {
+      "target": "index.js",
+      "argumentFormat": ""
+    },
     "Node20_1": {
       "target": "index.js",
       "argumentFormat": ""
@@ -95,19 +99,7 @@
       "target": "index.js",
       "argumentFormat": ""
     },
-    "Node14": {
-      "target": "index.js",
-      "argumentFormat": ""
-    },
-    "Node12": {
-      "target": "index.js",
-      "argumentFormat": ""
-    },
     "Node10": {
-      "target": "index.js",
-      "argumentFormat": ""
-    },
-    "Node": {
       "target": "index.js",
       "argumentFormat": ""
     }
