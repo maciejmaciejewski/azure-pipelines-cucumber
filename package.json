@@ -35,7 +35,10 @@
   "devDependencies": {
     "@types/node": "22.10.9",
     "semver": "7.6.3",
-    "tfx-cli": "0.18.0",
+    "tfx-cli": "0.23.4",
     "typescript": "5.7.3"
+  },
+  "overrides": {
+    "brace-expansion": "^5.0.9"
   }
 }
