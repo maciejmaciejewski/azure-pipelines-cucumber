@@ -14,9 +14,9 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "17"
+    "Patch": "18"
   },
-  "minimumAgentVersion": "2.115.0",
+  "minimumAgentVersion": "2.214.1",
   "instanceNameFormat": "Publish Cucumber Report",
   "inputs": [
     {
@@ -87,27 +87,11 @@
     }
   ],
   "execution": {
+    "Node24": {
+      "target": "index.js",
+      "argumentFormat": ""
+    },
     "Node20_1": {
-      "target": "index.js",
-      "argumentFormat": ""
-    },
-    "Node16": {
-      "target": "index.js",
-      "argumentFormat": ""
-    },
-    "Node14": {
-      "target": "index.js",
-      "argumentFormat": ""
-    },
-    "Node12": {
-      "target": "index.js",
-      "argumentFormat": ""
-    },
-    "Node10": {
-      "target": "index.js",
-      "argumentFormat": ""
-    },
-    "Node": {
       "target": "index.js",
       "argumentFormat": ""
     }
