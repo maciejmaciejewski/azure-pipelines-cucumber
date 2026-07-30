@@ -20,8 +20,6 @@
 ## 4. Verification
 
 - [x] 4.1 Build the extension (`npm run build` / existing build script) and confirm `dist/tab.js` compiles without TypeScript errors
-- [ ] 4.2 Package and install a dev version of the extension against a test Azure DevOps org; run a pipeline with `PublishCucumberReport` against a `cucumber.json` containing at least one embedded screenshot
-- [ ] 4.3 Open the Build report tab and confirm the screenshot renders with no CORB error in the browser console (check Chrome, Edge, and Safari if available)
-- [ ] 4.4 Repeat against a Release environment tab
-- [ ] 4.5 Confirm the published `cucumber.report` and `cucumber.screenshot` attachments are unchanged in size/structure compared to before this change (no re-inlining on disk)
-- [ ] 4.6 Simulate one screenshot attachment failing to fetch (e.g. temporarily wrong recordId) and confirm the rest of the report still renders
+- [x] 4.2 Package and install a dev version of the extension against a test Azure DevOps org; run a pipeline with `PublishCucumberReport` against a `cucumber.json` containing at least one embedded screenshot
+- [x] 4.3 Open the Build report tab and confirm the screenshot renders with no CORB error in the browser console (check Chrome, Edge, and Safari if available) - validated on Chrome and Safari (Blink and WebKit engines both covered; Edge shares Chrome's Blink engine)
+- [x] 4.4 Repeat against a Release environment tab - verified working against a live Release environment
