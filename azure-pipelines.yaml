@@ -33,6 +33,12 @@ steps:
     workingDir: tasks/PublishCucumberReport
     verbose: false
 
+- task: Npm@1
+  displayName: 'NPM: Install Reporter Dependencies'
+  inputs:
+    workingDir: tasks/PublishCucumberReport/reporter
+    verbose: false
+
 - task: TfxInstaller@5
   inputs:
     version: 'v0.x'

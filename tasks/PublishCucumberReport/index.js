@@ -62,14 +62,6 @@ function unifyCucumberReport (filesArray, hasMagic) {
 
 async function main() {
   try {
-    const tool = tl.tool(tl.which('npm', true))
-    tool.arg(['install'])
-    const npmProcess = tool.execSync(getDefaultExecOptions())
-
-    if (npmProcess.code !== 0) {
-      throw new Error('Failed to install dependencies')
-    }
-
     const inputPath = tl.getPathInput('jsonDir', true, false)
     const normalizedInputPath = inputPath.replace(/\\/g, '/')
     const pathHasMagic = hasMagic(normalizedInputPath)
