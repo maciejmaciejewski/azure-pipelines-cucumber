@@ -26,6 +26,23 @@ abstract class BaseReportTab extends Controls.BaseControl {
     return enc.decode(arr);
   }
 
+  protected arrayBufferToBase64(buffer: ArrayBuffer): string {
+    const bytes = new Uint8Array(buffer);
+    const chunkSize = 0x8000;
+    let binary = '';
+
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      const chunk = bytes.subarray(i, i + chunkSize);
+      binary += String.fromCharCode.apply(null, chunk as unknown as number[]);
+    }
+
+    return btoa(binary);
+  }
+
+  protected screenshotMimeType(screenshotName: string): string {
+    return screenshotName.toLowerCase().endsWith('.gif') ? 'image/gif' : 'image/png';
+  }
+
   protected setFrameHtmlContent(htmlStr: string, reportName: string) {
     if(!htmlStr){
       console.log("empty htmlstr")
@@ -76,20 +93,27 @@ abstract class BaseReportTab extends Controls.BaseControl {
     this.setTabText(message)
   }
 
-  protected sanitizeImageLinks(reportText: string, screenshotList) {
+  protected async sanitizeImageLinks(reportText: string, screenshotList, fetchContent: (screenshot) => IPromise<ArrayBuffer>) {
     this.setTabText('Sanitizing Image Links')
-    screenshotList.forEach(screenshot => {
-      console.log(screenshot)
-      // Handle Windows paths`
-      let windowsPath = `screenshots\\\\${screenshot.name}`
-      let windowsRegExp = new RegExp(windowsPath, 'gi')
-      reportText = reportText.replace(windowsRegExp, screenshot._links.self.href)
 
-      // Handle Unix paths
-      let unixPath = `screenshots/${screenshot.name}`
-      let unixRegExp = new RegExp(unixPath, 'gi')
-      reportText = reportText.replace(unixRegExp, screenshot._links.self.href)
-    })
+    await Promise.all(screenshotList.map(async screenshot => {
+      try {
+        const content = await fetchContent(screenshot)
+        const dataUri = `data:${this.screenshotMimeType(screenshot.name)};base64,${this.arrayBufferToBase64(content)}`
+
+        // Handle Windows paths
+        let windowsPath = `screenshots\\\\${screenshot.name}`
+        let windowsRegExp = new RegExp(windowsPath, 'gi')
+        reportText = reportText.replace(windowsRegExp, dataUri)
+
+        // Handle Unix paths
+        let unixPath = `screenshots/${screenshot.name}`
+        let unixRegExp = new RegExp(unixPath, 'gi')
+        reportText = reportText.replace(unixRegExp, dataUri)
+      } catch (error) {
+        console.log(`Failed to load screenshot ${screenshot.name}`, error)
+      }
+    }))
 
     return reportText
   }
@@ -135,7 +159,9 @@ class BuildReportTab extends BaseReportTab {
           this.setTabText('Looking for screenshots')
           let screenshots = await taskClient.getPlanAttachments(projectId, this.hubName, planId, this.SCREENSHOT_TYPE)
 
-          let finalReport = this.sanitizeImageLinks(htmlContent, screenshots)
+          let finalReport = await this.sanitizeImageLinks(htmlContent, screenshots, screenshot =>
+            taskClient.getAttachmentContent(projectId, this.hubName, planId, cucumberReport.timelineId, screenshot.recordId, this.SCREENSHOT_TYPE, screenshot.name)
+          )
           this.setTabText('Publishing Report')
           this.setFrameHtmlContent(finalReport, cucumberReport.name)
         })
@@ -232,7 +258,18 @@ class ReleaseReportTab extends BaseReportTab {
                       this.SCREENSHOT_TYPE
                     );
             
-                    const finalReport = this.sanitizeImageLinks(htmlContent, screenshots)
+                    const finalReport = await this.sanitizeImageLinks(htmlContent, screenshots, screenshot =>
+                      rmClient.getTaskAttachmentContent(
+                        vsoContext.project.id,
+                        env.releaseId,
+                        env.id,
+                        deployStep.attempt,
+                        phase.runPlanId,
+                        screenshot.recordId,
+                        this.SCREENSHOT_TYPE,
+                        screenshot.name,
+                      )
+                    )
                     this.setTabText('Publishing Report')
                     console.log(finalReport)
                     this.setFrameHtmlContent(finalReport, cucumberReport.name)
