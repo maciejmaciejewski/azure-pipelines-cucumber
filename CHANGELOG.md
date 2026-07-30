@@ -4,13 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [1.0.17] - 2026-07-30
 
-### Changed
-- **Reporter dependency packaging**: `cucumber-html-reporter` and its dependencies are now installed once at extension build/package time (via a new CI step) instead of being installed by the `PublishCucumberReport` task on every pipeline run.
-- The task no longer performs any `npm install` (or other network calls) at runtime — report generation now works on agents without npm registry access.
-- Bumped version to 1.0.17.
+### Fixed
+- **Screenshots not rendering in the report tab**: the Build/Release report tab loaded step screenshots by pointing an `<img>` tag directly at the Azure DevOps attachment REST endpoint. Browsers blocked that response via CORB (Cross-Origin Read Blocking), since the endpoint doesn't return a browser-trusted image `Content-Type` - screenshots were captured, uploaded, and correctly linked, but silently failed to display. Reproduced identically on Windows and Linux agents, across Chrome, Edge, and Safari. Screenshots are now fetched through the same authenticated attachment-content REST call already used for the report HTML, base64-encoded, and inlined as `data:` URIs before the report is rendered, avoiding the cross-origin fetch entirely. Report and attachment sizes on disk are unchanged.
 
-### Notes
-- This increases the packaged extension size (`.vsix` grows from ~3 MB to ~19.5 MB) since the reporter's dependencies now ship with the extension. Report output, task inputs, and behavior are otherwise unchanged.
+### Changed
+- Bumped version to 1.0.17.
 
 ## [1.0.16] - 2025-08-18
 
