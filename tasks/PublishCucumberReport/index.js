@@ -1,8 +1,7 @@
 const tl = require('azure-pipelines-task-lib')
 const { join, basename } = require('path')
 const { ensureDirSync, readFileSync, writeFileSync } = require('fs-extra')
-const globby = require('globby')
-const { hasMagic } = require('glob')
+const { glob, hasMagic } = require('glob')
 const hat = require('hat')
 let consolidatedPath
 
@@ -73,7 +72,7 @@ async function main() {
     const inputPath = tl.getPathInput('jsonDir', true, false)
     const normalizedInputPath = inputPath.replace(/\\/g, '/')
     const pathHasMagic = hasMagic(normalizedInputPath)
-    const files = await globby([`${normalizedInputPath}/*.json`])
+    const files = await glob(`${normalizedInputPath}/*.json`)
     console.log(`Found ${files.length} matching ${inputPath} pattern`)
 
     unifyCucumberReport(files, pathHasMagic)
@@ -103,7 +102,7 @@ async function main() {
     tl.addAttachment('cucumber.report', `${reportName}.html`, outputReportFile)
 
     const normalizedOutputPath = outputPath.replace(/\\/g, '/')
-    const screenshots = await globby(`${normalizedOutputPath}/screenshots/**.png`)
+    const screenshots = await glob(`${normalizedOutputPath}/screenshots/**.png`)
     screenshots.forEach(screenshotPath => {
       tl.addAttachment('cucumber.screenshot', basename(screenshotPath), screenshotPath)
       console.log(`Uploading Screenshot ${screenshotPath}`)
