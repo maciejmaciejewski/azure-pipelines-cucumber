@@ -5,6 +5,7 @@ import TFS_Build_Contracts = require("TFS/Build/Contracts");
 import DT_Client = require("TFS/DistributedTask/TaskRestClient");
 import RM_Client = require("ReleaseManagement/Core/RestClient");
 import TFS_Release_Contracts = require("ReleaseManagement/Core/Contracts");
+import { arrayBufferToBase64, screenshotMimeType, replaceScreenshotReferences } from "./report-utils";
 
 abstract class BaseReportTab extends Controls.BaseControl {
   protected readonly ATTACHMENT_TYPE: string = "cucumber.report";
@@ -24,23 +25,6 @@ abstract class BaseReportTab extends Controls.BaseControl {
     const enc = new TextDecoder("utf-8");
     const arr = new Uint8Array(buffer);
     return enc.decode(arr);
-  }
-
-  protected arrayBufferToBase64(buffer: ArrayBuffer): string {
-    const bytes = new Uint8Array(buffer);
-    const chunkSize = 0x8000;
-    let binary = '';
-
-    for (let i = 0; i < bytes.length; i += chunkSize) {
-      const chunk = bytes.subarray(i, i + chunkSize);
-      binary += String.fromCharCode.apply(null, chunk as unknown as number[]);
-    }
-
-    return btoa(binary);
-  }
-
-  protected screenshotMimeType(screenshotName: string): string {
-    return screenshotName.toLowerCase().endsWith('.gif') ? 'image/gif' : 'image/png';
   }
 
   protected setFrameHtmlContent(htmlStr: string, reportName: string) {
@@ -99,17 +83,8 @@ abstract class BaseReportTab extends Controls.BaseControl {
     await Promise.all(screenshotList.map(async screenshot => {
       try {
         const content = await fetchContent(screenshot)
-        const dataUri = `data:${this.screenshotMimeType(screenshot.name)};base64,${this.arrayBufferToBase64(content)}`
-
-        // Handle Windows paths
-        let windowsPath = `screenshots\\\\${screenshot.name}`
-        let windowsRegExp = new RegExp(windowsPath, 'gi')
-        reportText = reportText.replace(windowsRegExp, dataUri)
-
-        // Handle Unix paths
-        let unixPath = `screenshots/${screenshot.name}`
-        let unixRegExp = new RegExp(unixPath, 'gi')
-        reportText = reportText.replace(unixRegExp, dataUri)
+        const dataUri = `data:${screenshotMimeType(screenshot.name)};base64,${arrayBufferToBase64(content)}`
+        reportText = replaceScreenshotReferences(reportText, screenshot.name, dataUri)
       } catch (error) {
         console.log(`Failed to load screenshot ${screenshot.name}`, error)
       }

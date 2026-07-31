@@ -20,6 +20,14 @@ steps:
     verbose: false
 
 - task: Npm@1
+  displayName: 'NPM: Test Extension'
+  inputs:
+    command: custom
+    workingDir: .
+    verbose: false
+    customCommand: 'run test'
+
+- task: Npm@1
   displayName: 'NPM: Build Extension'
   inputs:
     command: custom
@@ -32,6 +40,14 @@ steps:
   inputs:
     workingDir: tasks/PublishCucumberReport
     verbose: false
+
+- task: Npm@1
+  displayName: 'NPM: Test Task'
+  inputs:
+    command: custom
+    workingDir: tasks/PublishCucumberReport
+    verbose: false
+    customCommand: 'run test'
 
 - task: TfxInstaller@5
   inputs:

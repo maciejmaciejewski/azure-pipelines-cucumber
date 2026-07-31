@@ -3,13 +3,14 @@
   "version": "1.0.17",
   "description": "Embed Cucumber HTML result into release and build tabs",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc -p .",
+    "test": "node --test src/*.test.js",
     "package": "tfx extension create --root . --env dev --manifest-globs vss-extension.json",
     "gallery-publish": "tfx extension publish --token $PAT",
     "clean": "rimraf ./dist && rimraf ./*.vsix",
-    "bump-version": "node utils/bump-version.js",
-    "build-publish": "npm run clean && npm run bump-version && npm run build && npm run package && npm run gallery-publish"
+    "build-publish": "npm run clean && npm run build && npm run package && npm run gallery-publish"
   },
   "repository": {
     "type": "git",
@@ -34,7 +35,6 @@
   },
   "devDependencies": {
     "@types/node": "22.10.9",
-    "semver": "7.6.3",
     "tfx-cli": "0.23.4",
     "typescript": "5.7.3"
   },
